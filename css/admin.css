@@ -2394,3 +2394,70 @@ margin-bottom:7px;
 	min-width: 205px;
 	width: 205px;
 }
+
+
+/******************** CSS Carrier Wizard ************************/
+
+#carrier_wizard.swMain{min-width: 980px;}
+
+#carrier_wizard.swMain ul.anchor li{
+	margin-bottom:10px;
+	background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat 0 0;
+	padding-right: 22px;
+	border: medium none;
+    padding-left: 0;
+}
+
+#carrier_wizard.swMain ul.anchor li.disabled{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right -64px;}
+#carrier_wizard.swMain ul.anchor li.selected{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right -32px;}
+#carrier_wizard.swMain ul.anchor li.done{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right 0;}
+
+#carrier_wizard.swMain ul.anchor li a{
+	width:auto;
+	padding: 3px 20px;
+	height: 24px;
+    min-height: 24px;
+	min-width: 165px;
+	border-radius:0
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /*** IE10 ***/
+	#carrier_wizard.swMain ul.anchor li a{
+		padding: 3px 19px 3px 19px;
+	}
+}
+
+.ie9 #carrier_wizard.swMain ul.anchor li a, .ie8 #carrier_wizard.swMain ul.anchor li a.ie7 #carrier_wizard.swMain ul.anchor li a{
+	padding: 3px 19px 3px 19px;
+}
+
+#carrier_wizard.swMain ul.anchor li a.disabled {
+    background: none repeat 0 0 #CCCCCC;
+    border: none;
+    box-shadow: none;
+    cursor: text;
+}
+
+#carrier_wizard.swMain ul.anchor li a.selected, 
+#carrier_wizard.swMain ul.anchor li a.done {
+    background: none repeat 0 0 #414A56;
+    border: none;
+    box-shadow: none;
+    color: #ffffff;
+    cursor: text;
+}
+
+
+#carrier_wizard.swMain ul.anchor li a .stepNumber {font: bold 23px/21px  Verdana,Arial,Helvetica,sans-serif;color: #747C88;padding-bottom: 0;}
+#carrier_wizard.swMain ul.anchor li a.selected .stepNumber,
+#carrier_wizard.swMain ul.anchor li a.done .stepNumber {color: #ffffff;}
+
+#carrier_wizard.swMain ul.anchor li a .stepDesc {
+    font: bold 13px/12px Verdana,Arial,Helvetica,sans-serif;
+	color: #747C88;
+	padding:0 5px
+}
+#carrier_wizard.swMain ul.anchor li a.selected .stepDesc,
+#carrier_wizard.swMain ul.anchor li a.done .stepDesc {color: #ffffff;}
+
+#carrier_wizard.swMain ul.anchor li a .stepDesc small {font: 11px Verdana,Arial,Helvetica,sans-serif;}
