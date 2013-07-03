@@ -26,13 +26,26 @@
 {extends file="helpers/view/view.tpl"}
 {block name="override_tpl"}
 <script>
+cleanClasses = function cleanClasses()
+{
+	$('.anchor li a').each( function () {
+		$(this).parent('li').addClass($(this).attr('class'));
+	});
+}
+
 $(document).ready(function () {
 	$("#carrier_wizard").smartWizard({
 		'labelNext' : '{$labels.next}',
 		'labelPrevious' : '{$labels.previous}',
-		'labelFinish' : '{$labels.finish}'
+		'labelFinish' : '{$labels.finish}',
+		'fixHeight' : true,
+		'onShowStep' : cleanClasses
 	});
+	$("#carrier_wizard").smartWizard('fixHeight');
 });
+
+
+
 </script>
 <div id="carrier_wizard" class="swMain">
 	<ul>
@@ -49,7 +62,7 @@ $(document).ready(function () {
 	{/foreach}
 	</ul>
 	{foreach from=$wizard_contents.contents key=step_nbr item=content}
-		<div id="step-{$step_nbr + 1}"> 	
+		<div id="step-{$step_nbr + 1}" style="padding-bottom:10px"> 	
 			{$content}
 		</div>
 	{/foreach}

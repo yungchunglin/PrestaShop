@@ -117,12 +117,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 					)
 				),
 				array(
-					'type' => 'file',
-					'label' => $this->l('Logo:'),
-					'name' => 'logo',
-					'desc' => $this->l('Upload a logo from your computer.').' (.gif, .jpg, .jpeg '.$this->l('or').' .png)'
-				),
-				array(
 					'type' => 'text',
 					'label' => $this->l('Transit time:'),
 					'name' => 'delay',
@@ -139,6 +133,12 @@ class AdminCarrierWizardControllerCore extends AdminController
 					'required' => false,
 					'size' => 1,
 					'desc' => $this->l('Enter "0" for a longest shipping delay, or "9" for the shortest shipping delay.')
+				),
+				array(
+					'type' => 'file',
+					'label' => $this->l('Logo:'),
+					'name' => 'logo',
+					'desc' => $this->l('Upload a logo from your computer.').' (.gif, .jpg, .jpeg '.$this->l('or').' .png)'
 				),
 				array(
 					'type' => 'text',
@@ -168,9 +168,9 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		return array(
 			'name' => $this->getFieldsValue($carrier, 'name'),
-			'logo' => '',
 			'delay' => $this->getFieldsValue($carrier, 'delay'),
 			'grade' => $this->getFieldsValue($carrier, 'grade'),
+			'logo' => '',
 			'url' => $this->getFieldsValue($carrier, 'url'),
 			);
 		
