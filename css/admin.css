@@ -2398,14 +2398,16 @@ margin-bottom:7px;
 
 /******************** CSS Carrier Wizard ************************/
 
-#carrier_wizard.swMain{min-width: 980px;}
+#carrier_wizard.swMain{width: 100%;}
+#carrier_wizard.swMain ul.anchor{width: 100%;}
 
 #carrier_wizard.swMain ul.anchor li{
 	margin-bottom:10px;
 	background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat 0 0;
-	padding-right: 22px;
 	border: medium none;
     padding-left: 0;
+	padding-right: 62px;
+    width: 21%;
 }
 
 #carrier_wizard.swMain ul.anchor li.disabled{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right -64px;}
@@ -2413,11 +2415,10 @@ margin-bottom:7px;
 #carrier_wizard.swMain ul.anchor li.done{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right 0;}
 
 #carrier_wizard.swMain ul.anchor li a{
-	width:auto;
 	padding: 3px 20px;
+	width: 100%;
 	height: 24px;
     min-height: 24px;
-	min-width: 165px;
 	border-radius:0
 }
 
@@ -2432,7 +2433,7 @@ margin-bottom:7px;
 }
 
 #carrier_wizard.swMain ul.anchor li a.disabled {
-    background: none repeat 0 0 #CCCCCC;
+    background:  #CCCCCC;
     border: none;
     box-shadow: none;
     cursor: text;
@@ -2440,7 +2441,7 @@ margin-bottom:7px;
 
 #carrier_wizard.swMain ul.anchor li a.selected, 
 #carrier_wizard.swMain ul.anchor li a.done {
-    background: none repeat 0 0 #414A56;
+    background: #414A56;
     border: none;
     box-shadow: none;
     color: #ffffff;
