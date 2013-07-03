@@ -2290,7 +2290,7 @@ class AdminControllerCore extends Controller
 	 * @return array
 	 */
 	public function getFieldsValue($obj)
-	{
+	{	
 		foreach ($this->fields_form as $fieldset)
 			if (isset($fieldset['form']['input']))
 				foreach ($fieldset['form']['input'] as $input)
