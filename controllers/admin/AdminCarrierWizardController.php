@@ -97,7 +97,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 	
 	public function renderStepOne()
 	{
-		$fields_form = array(
+		$this->fields_form = array(
 			'form' => array(
 			'legend' => array(
 				'title' => $this->l('Carriers:'),
@@ -152,7 +152,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 				
 		$carrier = new Carrier(1);
 		$fields_value = $this->getStep1FieldsValues($carrier);
-		return $this->renderGenericForm($fields_form, $fields_value);
+		return $this->renderGenericForm($this->fields_form, $fields_value);
 	}
 	
 	public function renderStepTow($fields_form)
