@@ -2423,7 +2423,7 @@ margin-bottom:7px;
 	width: 100%;
 	height: auto;
     min-height: 24px !important;
-	border-radius:0
+	border-radius:0;
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /*** IE10 ***/
@@ -2477,16 +2477,17 @@ margin-bottom:7px;
 
 
 #carrier_wizard.swMain ul.anchor li a .stepNumber {font: bold 23px/21px  Verdana,Arial,Helvetica,sans-serif;color: #747C88;padding-bottom: 0;}
-#carrier_wizard.swMain ul.anchor li a.selected .stepNumber,
-#carrier_wizard.swMain ul.anchor li a.done .stepNumber {color: #ffffff;}
+#carrier_wizard.swMain ul.anchor li a.selected .stepNumber{color: #ffffff;}
+#carrier_wizard.swMain ul.anchor li a.done .stepNumber {color: #A9B6C8;text-shadow: none;}
 
 #carrier_wizard.swMain ul.anchor li a .stepDesc {
     font: bold 13px/12px Verdana,Arial,Helvetica,sans-serif;
 	color: #747C88;
-	padding:0 5px
+	padding:0 5px;
+	cursor:pointer
 }
-#carrier_wizard.swMain ul.anchor li a.selected .stepDesc,
-#carrier_wizard.swMain ul.anchor li a.done .stepDesc {color: #ffffff;}
+#carrier_wizard.swMain ul.anchor li a.selected .stepDesc{color: #ffffff;}
+#carrier_wizard.swMain ul.anchor li a.done .stepDesc {color: #A9B6C8;}
 
 #carrier_wizard.swMain ul.anchor li a .stepDesc small {font: 11px Verdana,Arial,Helvetica,sans-serif;}
 
