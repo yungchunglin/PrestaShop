@@ -2407,7 +2407,8 @@ margin-bottom:7px;
 	border: medium none;
     padding-left: 0;
 	padding-right: 62px;
-    width: 21%;
+    min-width: 21%;
+	width:auto
 }
 
 #carrier_wizard.swMain ul.anchor li.disabled{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right -64px;}
@@ -2417,8 +2418,8 @@ margin-bottom:7px;
 #carrier_wizard.swMain ul.anchor li a{
 	padding: 3px 20px;
 	width: 100%;
-	height: 24px;
-    min-height: 24px;
+	height: auto;
+    min-height: 24px !important;
 	border-radius:0
 }
 
@@ -2426,10 +2427,26 @@ margin-bottom:7px;
 	#carrier_wizard.swMain ul.anchor li a{
 		padding: 3px 19px 3px 19px;
 	}
+	#carrier_wizard.swMain ul.anchor li{
+		padding-right: 60px;
+	}
 }
 
-.ie9 #carrier_wizard.swMain ul.anchor li a, .ie8 #carrier_wizard.swMain ul.anchor li a.ie7 #carrier_wizard.swMain ul.anchor li a{
+.ie9 #carrier_wizard.swMain ul.anchor li a, 
+.ie8 #carrier_wizard.swMain ul.anchor li a{
 	padding: 3px 19px 3px 19px;
+}
+.ie9 #carrier_wizard.swMain ul.anchor li, 
+.ie8 #carrier_wizard.swMain ul.anchor li{
+		padding-right: 60px;
+	}
+	
+.ie7 #carrier_wizard.swMain ul.anchor li a{
+	padding: 3px 19px 3px 19px;
+	width:394px
+}
+.ie7 #carrier_wizard.swMain ul.anchor li{
+	padding-right: 22px;
 }
 
 #carrier_wizard.swMain ul.anchor li a.disabled {
@@ -2462,3 +2479,6 @@ margin-bottom:7px;
 #carrier_wizard.swMain ul.anchor li a.done .stepDesc {color: #ffffff;}
 
 #carrier_wizard.swMain ul.anchor li a .stepDesc small {font: 11px Verdana,Arial,Helvetica,sans-serif;}
+
+#carrier_wizard.swMain .stepContainer div.content{width:96.7%}
+#carrier_wizard.swMain div.actionBar{width:97.3%}
