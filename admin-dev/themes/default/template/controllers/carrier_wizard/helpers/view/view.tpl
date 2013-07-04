@@ -48,7 +48,7 @@ $(document).ready(function () {
 
 </script>
 <div id="carrier_wizard" class="swMain">
-	<ul>
+	<ul class="nbr_steps_{$wizard_steps.steps|count}">
 	{foreach from=$wizard_steps.steps key=step_nbr item=step}
 		<li>
 			<a href="#step-{$step_nbr + 1}">

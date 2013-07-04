@@ -149,20 +149,32 @@ class AdminCarrierWizardControllerCore extends AdminController
 				),
 			)),
 		);
-		
-		$helper = new HelperForm();
+				
 		$carrier = new Carrier(1);
+		$fields_value = $this->getStep1FieldsValues($carrier);
+		return $this->renderGenericForm($fields_form, $fields_value);
+	}
+	
+	public function renderStepTow($fields_form)
+	{
 		
-		$helper->default_form_language = 1;
+		
+		
+	}
+	
+	public function renderGenericForm($fields_form, $fields_value)
+	{
+		$helper = new HelperForm();
+		$helper->default_form_language = $this->context->language->id;
 		$helper->allow_employee_form_lang = 1;
 		$this->fields_form = array();
 		$helper->tpl_vars = array(
-			'fields_value' => $this->getStep1FieldsValues($carrier),
+			'fields_value' => $fields_value,
 			'languages' => $this->getLanguages(),
 			'id_language' => 1
 			);
 		return $helper->generateForm(array('form' => $fields_form));
-	}
+	} 
 	
 	public function getStep1FieldsValues($carrier)
 	{
