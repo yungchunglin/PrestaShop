@@ -26,26 +26,11 @@
 {extends file="helpers/view/view.tpl"}
 {block name="override_tpl"}
 <script>
-cleanClasses = function cleanClasses()
-{
-	$('.anchor li a').each( function () {
-		$(this).parent('li').addClass($(this).attr('class'));
-	});
-}
-
-$(document).ready(function () {
-	$("#carrier_wizard").smartWizard({
-		'labelNext' : '{$labels.next}',
-		'labelPrevious' : '{$labels.previous}',
-		'labelFinish' : '{$labels.finish}',
-		'fixHeight' : true,
-		'onShowStep' : cleanClasses
-	});
-	$("#carrier_wizard").smartWizard('fixHeight');
-});
-
-
-
+	var labelNext = '{$labels.next}';
+	var labelPrevious = '{$labels.previous}';
+	var	labelFinish = '{$labels.finish}';
+	var	labelDelete = '{l s="Delete" js=1}';
+	var validate_url = '{$validate_url}'
 </script>
 <div id="carrier_wizard" class="swMain">
 	<ul class="nbr_steps_{$wizard_steps.steps|count}">

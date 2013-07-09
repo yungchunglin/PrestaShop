@@ -2493,3 +2493,8 @@ margin-bottom:7px;
 
 #carrier_wizard.swMain .stepContainer div.content{width:99%}
 #carrier_wizard.swMain div.actionBar{width:99.5%}
+
+.border_top {border-top:solid 1px #C0C0C0;}
+.border_bottom {border-bottom:solid 1px #C0C0C0;}
+.border_left {border-left:solid 1px #C0C0C0;}
+.border_right {border-right:solid 1px #C0C0C0;}
