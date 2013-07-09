@@ -2467,12 +2467,14 @@ margin-bottom:7px;
 }
 
 #carrier_wizard.swMain ul.anchor li a.selected, 
-#carrier_wizard.swMain ul.anchor li a.done {
-    background: #414A56;
-    border: none;
+#carrier_wizard.swMain ul.anchor li a.done,
+#carrier_wizard.swMain ul.anchor li a.error {
+    background: #414A56 !important;
+    border: none !important;
     box-shadow: none;
     color: #ffffff;
     cursor: text;
+	margin:0
 }
 
 
