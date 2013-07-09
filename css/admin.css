@@ -2403,7 +2403,7 @@ margin-bottom:7px;
 
 #carrier_wizard.swMain ul.anchor li{
 	margin-bottom:10px;
-	background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat 0 0;
+	background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat 0 0!important;
 	border: medium none;
     padding-left: 0;
 	width:auto;
@@ -2414,9 +2414,9 @@ margin-bottom:7px;
 #carrier_wizard.swMain ul.nbr_steps_4 li{min-width: 21.6%;}
 #carrier_wizard.swMain ul.nbr_steps_5 li{ min-width: 16.6%;}
 
-#carrier_wizard.swMain ul.anchor li.disabled{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right -64px;}
-#carrier_wizard.swMain ul.anchor li.selected{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right -32px;}
-#carrier_wizard.swMain ul.anchor li.done{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right 0;}
+#carrier_wizard.swMain ul.anchor li.disabled{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right -64px!important;}
+#carrier_wizard.swMain ul.anchor li.selected{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right -32px!important;}
+#carrier_wizard.swMain ul.anchor li.done{background: transparent url(../img/admin/steps-carrierwizard.png) no-repeat right 0!important;}
 
 #carrier_wizard.swMain ul.anchor li a{
 	padding: 3px 20px;
@@ -2500,3 +2500,5 @@ margin-bottom:7px;
 .border_bottom {border-bottom:solid 1px #C0C0C0;}
 .border_left {border-left:solid 1px #C0C0C0;}
 .border_right {border-right:solid 1px #C0C0C0;}
+
+#carrier_wizard input.field_error {border : solid 1px red; background-color:#FFCCCC}

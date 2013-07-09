@@ -56,48 +56,40 @@ function leaveStepCallback(obj, context)
 	return validateSteps(context.fromStep); // return false to stay on step and true to continue navigation 
 }
 
-function validateSteps(step_number){
-    var step_valid = true;
-	
+function validateSteps(step_number)
+{
+	var is_ok = true;
 	form = $('#carrier_wizard #step-'+step_number+' form');
-	
-/*
-	switch(step_number)
-	{
-		case 1:
-	
-			break;
-		case 2:
-	
-			break;
-		default:
-		return false;
-	}
-*/
-	
 	$.ajax({
 		type:"POST",
 		url : validate_url,
-		async: true,
+		async: false,
 		dataType: 'json',
 		data : form.serialize()+'&step_number='+step_number+'&action=validate_step&ajax=1',
 		success : function(datas)
 		{
 			if (datas.has_error)
 			{
+				is_ok = false;
+				$('#wizard_error').remove();
+				
+				$('input').focus( function () {
+					$(this).removeClass('field_error');
+				});
+				
+				str_error = '<div class="error" id="wizard_error"><span style="float:right"><a id="hideError" href="#"><img alt="X" src="../img/admin/close.png" /></a></span><ul>';
 				for (var error in datas.errors)
 				{
 					$('#carrier_wizard').smartWizard('setError',{stepnum:step_number,iserror:true});
-					$('input[name="'+error+'"]').css({'border' : 'solid 1px red', 'background-color' : '#FFCCCC'});
-					$("#carrier_wizard")
-
+					$('input[name="'+error+'"]').addClass('field_error');
+					str_error += '<li>'+datas.errors[error]+'</li>';
 				}
-				return false;
+				$('#step-'+step_number).prepend(str_error+'</ul></div>');
+				resizeWizard();
 			}
-			
 		}
 	});
-	return true;
+	return is_ok;
 }
 
 function resizeWizard()

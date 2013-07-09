@@ -451,7 +451,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 			2 => array('is_free', 'id_tax_rules_group', 'shipping_handling', 'shipping_method', 'range_behavior'),
 			3 => array('range_behavior', 'max_height', 'max_width', 'max_depth', 'max_weight'),
 		);
-		
+		$rules = array();
 		switch ($step_number)
 		{
 			case 1:
@@ -461,7 +461,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 				$rules = Carrier::getValidationRules('Carrier');
 			break;
 		}
-		
+
 		foreach ($rules as $key_r => $rule)
 			foreach ($rule as $key_f => $field)
 				if (!in_array($field, $step_fields[$step_number]))
