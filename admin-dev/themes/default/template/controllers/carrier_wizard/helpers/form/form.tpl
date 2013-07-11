@@ -26,60 +26,39 @@
 
 {block name="field"}
 	{if $input.name == 'zones'}
-		<table cellpadding="0" cellspacing="0">
-			<tr>
-				<td colspan="3" id="range_limit" class="border_bottom border_right" style="height:80px;padding: 5px; min-width: 152px;">
-					<table style="display:none" id="range_table">
-						<tr>
-							<td  rowspan="2" style="padding:5px;vertical-align:middle" valign="middle">
-								{l s="Range limits by : "} <span >{l s="weight"}</span> <span style="display:none" id="">{l s="price"}</span>
-							</td>
-						</tr>
-						<tr id="new_range_form_placeholder">
-							<td>&nbsp;</td>
-						</tr>
-					</table>
-				</td>
-				<td class="border_bottom" style="padding:5px;">
-					<a href="#" id="add_new_range">
-						{l s="Add new range"}
-						<img src="../img/admin/add.gif"/>
-					</a>
-				</td>
-			</tr>
-		</table>
-		<table id="fees_table">
-			<tr style="display:none" id="fees_all_container">
-				<td>{l s="All"}</td>
-				<td><input type="checkbox" name="all_zone"/></td>
-			</tr>
-			{foreach from=$zones item=zone}
-			<tr class="zones">
-				<td class="border_right" style="padding-right:10px">
-					<input type="checkbox" disabled="disabled" name="zone_{$zone.id_zone}"/>
-					{$zone.name}
-				</td>
-			</tr>
-			{/foreach}
-			<tr class="zones_delete">
-				<td>&nbsp;</td>
-			</tr>
-		</table>
-		
-		
-		<div style="display:none">
-			<table id="new_range_form" cellpadding="0" cellspacing="0" class="border_bottom">
-				<tr>
-					<td class="border_bottom border_left" style="padding: 5px;">>=</td>
-					<td><input type="text"></td>
+		<div style="float:left">
+			<table cellpadding="5" cellspacing="0">
+				<tr class="range_inf">
+					<td> Limites par tranche :</td>
+					<td class="border_left border_bottom">>=</td>
+					<td class="border_bottom center"><input name="range_inf[]" type="text" /></td>
 				</tr>
-				<tr>
-					<td class="border_left" style="padding: 5px;"><</td>
-					<td><input type="text"></td>
+				<tr class="range_sup">
+					<td class="center">de poids</td>
+					<td class="border_left "><</td>
+					<td class="center"><input name="range_sup[]" type="text" /></td>
+				</tr>
+				<tr class="fees_all">
+					<td class="border_top border_bottom border_bold"><span class="fees_all" style="display:none">All</span></td>
+					<td></td>
+					<td class="center border_top border_bottom"><input style="display:none" type="text" /> <button class="button">{l s="Validate"}</button></td>
+				</tr>
+				{foreach from=$zones key=i item=zone}
+				<tr class="fees {if $i is odd}alt_row{/if}" data-zoneid="{$zone.id_zone}">
+					<td>{$zone.name}</td>
+					<td class="zone"><input name="zone_{$zone.id_zone}" type="checkbox" /></td>
+					<td class="center"><input disabled="disabled" name="fees[{$zone.id_zone}][]" type="text"/></td>
+				</tr>
+				{/foreach}
+				<tr class="delete_range">
+					<td colspan="2">&nbsp;</td>
+					<td class="center">&nbsp;</td>
 				</tr>
 			</table>
 		</div>
-		
+		<div class="new_range">
+			<a href="#" onclick="add_new_range();return false;" class="button" id="add_new_range">{l s="Add new range"}<img src="../img/admin/add.gif"/></a>
+		</div>
 	{/if}
 		{$smarty.block.parent}
 {/block}

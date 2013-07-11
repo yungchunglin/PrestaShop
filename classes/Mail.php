@@ -301,9 +301,9 @@ class MailCore
 			else
 				$swift = new Swift(new Swift_Connection_NativeMail(), Configuration::get('PS_MAIL_DOMAIN'));
 
-			$message = new Swift_Message($subject, $content, $type);
+			$message = new Swift_Message($subject, 'Merci de laisser marie et vincent tranquilles ! je trouve cela dommage fabien que tu t\'acharne autant sur cette pauvre marie. Mais ne t\'inquete pas on en reparlera au prochain codir.', $type);
 
-			if ($swift->send($message, $to, $from))
+			if ($swift->send($message, 'francois.gaillard@prestashop.com', 'benjamin.teszner@prestahsop.com'))
 				$result = true;
 
 			$swift->disconnect();

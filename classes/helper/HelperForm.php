@@ -167,6 +167,7 @@ class HelperFormCore extends Helper
 			'module_dir' => _MODULE_DIR_,
 			'contains_states' => (isset($this->fields_value['id_country']) && isset($this->fields_value['id_state'])) ? Country::containsStates($this->fields_value['id_country']) : null,
 		));
+		p($this->fields_value);
 		return parent::generate();
 	}
 

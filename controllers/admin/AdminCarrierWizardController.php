@@ -35,8 +35,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 		$this->deleted = true;
 		$this->step_number = 0;
 
-
-
 		parent::__construct();
 	}
 
@@ -98,12 +96,14 @@ class AdminCarrierWizardControllerCore extends AdminController
 			'wizard_contents' => array(
 				'contents' => array(
 					0 => $this->renderStepOne($carrier),
-					1 => $this->renderStepTow($carrier),
-					2 => $this->renderStepThree($carrier),
-					3 => $this->renderStepFour($carrier)
+					1 => $this->renderStepThree($carrier),
+					2 => $this->renderStepFour($carrier)
 				)),
 			'labels' => array('next' => $this->l('Next'), 'previous' => $this->l('Previous'), 'finish' => $this->l('Finish'))
 		);
+		
+		if (Shop::isFeatureActive())
+			array_splice($this->$this->tpl_view_vars['wizard_contents']['contents'], 1, 0, array(0 => $this->renderStepTow($carrier)));
 
 		return parent::renderView();
 	}
@@ -364,6 +364,13 @@ class AdminCarrierWizardControllerCore extends AdminController
 						'size' => 10,
 						'desc' => $this->l('Maximum weight managed by this carrier. Set the value to "0," or leave this field blank to ignore.')
 					),
+					array(
+						'type' => 'group',
+						'label' => $this->l('Group access:'),
+						'name' => 'groupBox',
+						'values' => Group::getGroups(Context::getContext()->language->id),
+						'desc' => $this->l('Mark the groups that are allowed access to this carrier.')
+					)
 				)
 			));
 		$fields_value = $this->getStepFourFieldsValues($carrier);
@@ -423,17 +430,32 @@ class AdminCarrierWizardControllerCore extends AdminController
 			'max_height' => $this->getFieldValue($carrier, 'max_height'),
 			'max_width' => $this->getFieldValue($carrier, 'max_width'),
 			'max_depth' => $this->getFieldValue($carrier, 'max_depth'),
-			'max_weight' => $this->getFieldValue($carrier, 'max_weight'),			
+			'max_weight' => $this->getFieldValue($carrier, 'max_weight'),
+			'group' => $this->getFieldValue($carrier, 'group'),			
 			);
 	}
 	
 	public function ajaxProcessValidateStep()
 	{
 		$step_number = (int)Tools::getValue('step_number');
-		
-		$this->validateRules('AdminCarrierWizardControllerCore');
-		
 		$return = array('has_error' => false);
+
+		if (Shop::isFeatureActive() && $step_number == 2)
+		{
+			if (!Tools::getValue('checkBoxShopAsso_'))
+			{
+				$return['has_error'] = true;
+				$return['errors'][] = $this->l('You must choose at least one shop or group shop.');
+			}
+		}
+		else if ((!Shop::isFeatureActive() && $step_number == 2) || (Shop::isFeatureActive() && $step_number == 3))
+		{
+			d($_POST);
+		
+		}
+		else
+			$this->validateRules('AdminCarrierWizardControllerCore');
+		
 
 		if (count($this->errors))
 		{
@@ -451,28 +473,38 @@ class AdminCarrierWizardControllerCore extends AdminController
 			2 => array('is_free', 'id_tax_rules_group', 'shipping_handling', 'shipping_method', 'range_behavior'),
 			3 => array('range_behavior', 'max_height', 'max_width', 'max_depth', 'max_weight'),
 		);
+
+		if (Shop::isFeatureActive())
+		{
+			$multistore_field = array(array('shop'));
+			array_splice($step_fields, 1, 0, $multistore_field);
+		}
+
 		$rules = array();
 		switch ($step_number)
 		{
 			case 1:
 				$rules = Carrier::getValidationRules('Carrier');
-			break;
+				break;
 			case 2:
 				$rules = Carrier::getValidationRules('Carrier');
-			break;
+				break;
+			case 3:
+				$rules = Carrier::getValidationRules('Carrier');
+				break;
 		}
 
 		foreach ($rules as $key_r => $rule)
 			foreach ($rule as $key_f => $field)
-				if (!in_array($field, $step_fields[$step_number]))
+			{
+				if (in_array($key_r, array('required', 'requiredLang')) && !array_key_exists($key_f, $step_fields[$step_number]))
 					unset($rules[$key_r][$key_f]);
-		return $rules;
-/*
-			'carrier' => Carrier::getValidationRules('Carrier'),
-			'range_price' => RangePrice::getValidationRules('RangePrice'),
-			'range_weight' => RangeWeight::getValidationRules('RangeWeight'),
+				else
+					unset($rules[$key_r][$key_f]);
+			}
 
-*/
+		return $rules;
+
 	}
 	
 	public static function displayFieldName($field)

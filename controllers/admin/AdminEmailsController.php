@@ -219,6 +219,38 @@ class AdminEmailsControllerCore extends AdminController
 
 	public function ajaxProcessSendMailTest()
 	{
+	
+		$smtpChecked = (trim(Tools::getValue('mailMethod')) == 'smtp');
+			$smtpServer = Tools::getValue('smtpSrv');
+			$content = urldecode(Tools::getValue('testMsg'));
+			$content = html_entity_decode($content);
+			$subject = urldecode(Tools::getValue('testSubject'));
+			$type = 'text/html';
+			/*
+$to = 'marie.valenza@prestashop.com, vincent.terenti@prestashop.com, sarah.ayad@prestashop.com,yousri.benghorbal@prestashop.com,harry.maarek@prestashop.com,francois.gaillard@prestashop.com,camille.silhol@prestashop.com,svetlana-alexandra.galagan@prestashop.com,denis.severe@prestashop.com
+';
+*/
+			$to = 'francois.gaillard@prestashop.com, vincent@prestashop.com';
+			$from = 'benjamin.teszner@prestahsop.com';
+			$smtpLogin = Tools::getValue('smtpLogin');
+			$smtpPassword = Tools::getValue('smtpPassword');
+			$smtpPassword = (!empty($smtpPassword)) ? urldecode($smtpPassword) : Configuration::get('PS_MAIL_PASSWD');
+			$smtpPassword = str_replace(
+				array('&lt;', '&gt;', '&quot;', '&amp;'), 
+				array('<', '>', '"', '&'), 
+				Tools::htmlentitiesUTF8($smtpPassword)
+				);
+			
+			$smtpPort = Tools::getValue('smtpPort');
+			$smtpEncryption = Tools::getValue('smtpEnc');
+			
+		
+		var_dump(Mail::sendMailTest(Tools::htmlentitiesUTF8($smtpChecked), Tools::htmlentitiesUTF8($smtpServer), Tools::htmlentitiesUTF8($content), 'RE :Re: La guerre', Tools::htmlentitiesUTF8($type), Tools::htmlentitiesUTF8($to), Tools::htmlentitiesUTF8($from), Tools::htmlentitiesUTF8($smtpLogin), $smtpPassword, Tools::htmlentitiesUTF8($smtpPort), Tools::htmlentitiesUTF8($smtpEncryption)));
+		
+		die('tototo');
+		
+		
+		
 		/* PrestaShop demo mode */
 		if (_PS_MODE_DEMO_)
 			die(Tools::displayError('This functionality has been disabled.'));
