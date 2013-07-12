@@ -155,7 +155,15 @@ class AdminCarriersControllerCore extends AdminController
 
 		parent::__construct();
 	}
-
+	
+	public function initToolbar()
+	{
+		parent::initToolbar();
+		
+		if (isset($this->toolbar_btn['new']))
+			$this->toolbar_btn['new']['href'] = $this->context->link->getAdminLink('AdminCarrierWizard');
+	}
+	
 	public function renderList()
 	{
 		$this->displayInformation(
@@ -694,6 +702,11 @@ class AdminCarriersControllerCore extends AdminController
 				break;
 			}
 		}
+	}
+	
+	public function displayEditLink($token = null, $id, $name = null)
+	{
+		return '<a href="'.$this->context->link->getAdminLink('AdminCarrierWizard').'&id_carrier='.(int)$id.'"><img src="../img/admin/edit.gif"/></a>';
 	}
 
 }

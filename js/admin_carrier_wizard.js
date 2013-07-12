@@ -24,11 +24,9 @@
 */
 
 
-$(document).ready(function() {
-	
+$(document).ready(function() {	
 	bind_inputs();
 	initCarrierWizard();
-	
 });
 
 function initCarrierWizard()
@@ -39,7 +37,9 @@ function initCarrierWizard()
 		'labelFinish' : labelFinish,
 		'fixHeight' : 1,
 		'onShowStep' : onShowStepCallback,
-		'onLeaveStep' : leaveStepCallback,
+		'onLeaveStep' : onLeaveStepCallback,
+		'onFinish' : onFinishCallback,
+		'transitionEffect' : 'slideleft'
 	});
 }
 
@@ -51,9 +51,39 @@ function onShowStepCallback()
 	resizeWizard();
 }
 
-function leaveStepCallback(obj, context)
+function onFinishCallback(obj, context)
 {
+	$('.wizard_error').remove();
+	$.ajax({
+		type:"POST",
+		url : validate_url,
+		async: false,
+		dataType: 'json',
+		data : $('#carrier_wizard .stepContainer .content form').serialize()+'&action=finish_step&ajax=1',
+		success : function(datas)
+		{
+			if (datas.has_error)
+			{				
+				displayError(datas.errors, context.fromStep);
+				resizeWizard();
+			}
+			else
+				alert('YEAAAAAAH !!!');
+		}
+	});
+}
+
+function onLeaveStepCallback(obj, context)
+{
+	if (context.toStep == nbr_steps)
+		displaySummary();
+	
 	return validateSteps(context.fromStep); // return false to stay on step and true to continue navigation 
+}
+
+function displaySummary()
+{
+	
 }
 
 function validateSteps(step_number)
@@ -76,20 +106,25 @@ function validateSteps(step_number)
 				$('input').focus( function () {
 					$(this).removeClass('field_error');
 				});
-				
-				str_error = '<div class="error wizard_error"><span style="float:right"><a id="hideError" href="#"><img alt="X" src="../img/admin/close.png" /></a></span><ul>';
-				for (var error in datas.errors)
-				{
-					$('#carrier_wizard').smartWizard('setError',{stepnum:step_number,iserror:true});
-					$('input[name="'+error+'"]').addClass('field_error');
-					str_error += '<li>'+datas.errors[error]+'</li>';
-				}
-				$('#step-'+step_number).prepend(str_error+'</ul></div>');
+				displayError(datas.errors, step_number);
 				resizeWizard();
 			}
 		}
 	});
 	return is_ok;
+}
+
+function displayError(errors, step_number)
+{
+	$('.wizard_error').remove();
+	str_error = '<div class="error wizard_error"><span style="float:right"><a id="hideError" href="#"><img alt="X" src="../img/admin/close.png" /></a></span><ul>';
+	for (var error in errors)
+	{
+		$('#carrier_wizard').smartWizard('setError',{stepnum:step_number,iserror:true});
+		$('input[name="'+error+'"]').addClass('field_error');
+		str_error += '<li>'+errors[error]+'</li>';
+	}
+	$('#step-'+step_number).prepend(str_error+'</ul></div>');
 }
 
 function resizeWizard()
@@ -252,6 +287,7 @@ function add_new_range()
 	
 	resizeWizard();
 	bind_inputs();
+	
 	return false;
 }
 
@@ -261,8 +297,10 @@ function delete_new_range()
 		return false;
 }
 
-function setInputRangeId()
+function is_freeChange()
 {
-	
-	
+	if ($('input[name=is_free]:checked').val())
+		$('').hide();
+	else
+		$('').show();
 }

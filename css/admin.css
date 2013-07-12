@@ -2511,3 +2511,5 @@ margin-bottom:7px;
 #carrier_wizard table td.center {text-align: center}
 .new_range {float: left;margin: 20px 0 0 10px;}
 #carrier_wizard tr.fees_all { background: #CCCCCC}
+
+#carrier_wizard #zones_table input[type=text] {width: 45px;}
