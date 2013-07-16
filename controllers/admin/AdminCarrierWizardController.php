@@ -26,8 +26,6 @@
 
 class AdminCarrierWizardControllerCore extends AdminController
 {
-	
-	
 	public function __construct()
 	{
 		$this->display = 'view';
@@ -112,7 +110,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 		);
 		
 		if (Shop::isFeatureActive())
-			array_splice($this->tpl_view_vars['wizard_contents']['contents'], 1, 0, array(0 => $this->renderStepTow($carrier)));
+			array_splice($this->tpl_view_vars['wizard_contents']['contents'], 1, 0, array(0 => $this->renderStepTwo($carrier)));
 
 		return parent::renderView();
 	}
@@ -194,7 +192,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 		return $this->renderGenericForm(array('form' => $this->fields_form), $fields_value);
 	}
 
-	public function renderStepTow($carrier)
+	public function renderStepTwo($carrier)
 	{
 		$this->fields_form = array(
 			'form' => array(
@@ -210,7 +208,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 					),
 				))
 		);
-		$fields_value = $this->getStepTowFieldsValues($carrier);
+		$fields_value = $this->getStepTwoFieldsValues($carrier);
 		return $this->renderGenericForm(array('form' => $this->fields_form), $fields_value);
 	}
 
@@ -468,7 +466,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 		);
 	}
 
-	public function getStepTowFieldsValues($carrier)
+	public function getStepTwoFieldsValues($carrier)
 	{
 		return array('shop' => $this->getFieldValue($carrier, 'shop'));
 
