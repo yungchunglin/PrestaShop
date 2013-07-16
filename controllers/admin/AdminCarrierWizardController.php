@@ -229,12 +229,12 @@ class AdminCarrierWizardControllerCore extends AdminController
 						'class' => 't',
 						'values' => array(
 							array(
-								'id' => 'is_free_on',
+								'id' => 'is_free_off',
 								'value' => 0,
 								'label' => '<img src="../img/admin/enabled.gif" alt="'.$this->l('Yes').'" title="'.$this->l('Yes').'" />'
 							),
 							array(
-								'id' => 'is_free_off',
+								'id' => 'is_free_on',
 								'value' => 1,
 								'label' => '<img src="../img/admin/disabled.gif" alt="'.$this->l('No').'" title="'.$this->l('No').'" />'
 							)

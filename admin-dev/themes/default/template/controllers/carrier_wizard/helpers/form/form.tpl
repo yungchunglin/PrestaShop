@@ -63,7 +63,7 @@
 				{foreach from=$zones key=i item=zone}
 				<tr class="fees {if $i is odd}alt_row{/if}" data-zoneid="{$zone.id_zone}">
 					<td>{$zone.name}</td>
-					<td class="zone"><input name="zone_{$zone.id_zone}" value="1" type="checkbox" {if isset($fields_value[$input.name][$zone.id_zone])} checked="checked"{/if}/></td>
+					<td class="zone"><input class="input_zone" name="zone_{$zone.id_zone}" value="1" type="checkbox" {if isset($fields_value[$input.name][$zone.id_zone])} checked="checked"{/if}/></td>
 					{foreach from=$ranges key=r item=range}
 						<td class="center"><input {if !isset($price_by_range[$range.id_range][$zone.id_zone])} disabled="disabled" {/if} name="fees[{$zone.id_zone}][]" type="text" value="{if isset($price_by_range[$range.id_range][$zone.id_zone])} {$price_by_range[$range.id_range][$zone.id_zone]|string_format:"%.6f"} {/if}" /></td>
 					{/foreach}
