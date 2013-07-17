@@ -139,10 +139,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		$this->fields_form = array(
 			'form' => array(
-				'legend' => array(
-					'title' => $this->l('Carriers:'),
-					'image' => '../img/admin/delivery.gif'
-				),
 				'input' => array(
 					array(
 						'type' => 'text',
@@ -198,10 +194,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		$this->fields_form = array(
 			'form' => array(
-				'legend' => array(
-					'title' => $this->l('Carriers:'),
-					'image' => '../img/admin/delivery.gif'
-				),
 				'input' => array(
 					array(
 						'type' => 'shop',
@@ -218,10 +210,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		$this->fields_form = array(
 			'form' => array(
-				'legend' => array(
-					'title' => $this->l('Carriers:'),
-					'image' => '../img/admin/delivery.gif'
-				),
 				'input' => array(
 					array(
 						'type' => 'radio',
@@ -343,10 +331,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		$this->fields_form = array(
 			'form' => array(
-				'legend' => array(
-					'title' => $this->l('Carriers:'),
-					'image' => '../img/admin/delivery.gif'
-				),
 				'input' => array(
 					array(
 						'type' => 'select',

@@ -68,24 +68,7 @@ class AdminShippingControllerCore extends AdminController
 						<li>'.$this->l('Coupons are not taken into account when calculating free shipping').'</li>
 					</ul>',
 				'submit' => array()
-			),
-			// Deprecated since 1.5.5
-			// 'billing' => array(
-				// 'title' =>	$this->l('Billing'),
-				// 'icon' => 'money',
-				// 'fields' =>	array(
-					// 'PS_SHIPPING_METHOD' => array(
-						// 'title' => $this->l('Billing'),
-						// 'cast' => 'intval',
-						// 'type' => 'radio',
-						// 'choices' => array(
-							// 0 => $this->l('According to total price'),
-							// 1 => $this->l('According to total weight')
-						// ),
-						// 'validation' => 'isBool'
-					// ),
-				// )
-			// ),
+			)
 		);
 	}
 
