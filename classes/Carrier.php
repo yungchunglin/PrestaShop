@@ -165,6 +165,14 @@ class CarrierCore extends ObjectModel
 	public function __construct($id = null, $id_lang = null)
 	{
 		parent::__construct($id, $id_lang);
+		
+		/**
+		 * keep retrocompatibility SHIPPING_METHOD_DEFAULT
+		 * @deprecated 1.5.5
+		 */
+		if ($this->shipping_method == Carrier::SHIPPING_METHOD_DEFAULT)
+			$this->shipping_method = ((int)Configuration::get('PS_SHIPPING_METHOD') ? Carrier::SHIPPING_METHOD_WEIGHT : Carrier::SHIPPING_METHOD_PRICE);
+
 		/**
 		 * keep retrocompatibility id_tax_rules_group
 		 * @deprecated 1.5.0

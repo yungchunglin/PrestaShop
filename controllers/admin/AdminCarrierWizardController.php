@@ -272,11 +272,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 						'br' => true,
 						'values' => array(
 							array(
-								'id' => 'billing_default',
-								'value' => Carrier::SHIPPING_METHOD_DEFAULT,
-								'label' => $this->l('Default behavior')
-							),
-							array(
 								'id' => 'billing_price',
 								'value' => Carrier::SHIPPING_METHOD_PRICE,
 								'label' => $this->l('According to total price')

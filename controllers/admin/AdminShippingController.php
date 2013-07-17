@@ -69,22 +69,23 @@ class AdminShippingControllerCore extends AdminController
 					</ul>',
 				'submit' => array()
 			),
-			'billing' => array(
-				'title' =>	$this->l('Billing'),
-				'icon' => 'money',
-				'fields' =>	array(
-					'PS_SHIPPING_METHOD' => array(
-						'title' => $this->l('Billing'),
-						'cast' => 'intval',
-						'type' => 'radio',
-						'choices' => array(
-							0 => $this->l('According to total price'),
-							1 => $this->l('According to total weight')
-						),
-						'validation' => 'isBool'
-					),
-				)
-			),
+			// Deprecated since 1.5.5
+			// 'billing' => array(
+				// 'title' =>	$this->l('Billing'),
+				// 'icon' => 'money',
+				// 'fields' =>	array(
+					// 'PS_SHIPPING_METHOD' => array(
+						// 'title' => $this->l('Billing'),
+						// 'cast' => 'intval',
+						// 'type' => 'radio',
+						// 'choices' => array(
+							// 0 => $this->l('According to total price'),
+							// 1 => $this->l('According to total weight')
+						// ),
+						// 'validation' => 'isBool'
+					// ),
+				// )
+			// ),
 		);
 	}
 
