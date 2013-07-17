@@ -472,9 +472,11 @@ class AdminCarrierWizardControllerCore extends AdminController
 
 	public function getStepThreeFieldsValues($carrier)
 	{
+		$id_tax_rules_group = (is_object($this->object) && !$this->object->id) ? Carrier::getIdTaxRulesGroupMostUsed() : $this->getFieldValue($carrier, 'id_tax_rules_group');
+		
 		return array(
 			'is_free' => $this->getFieldValue($carrier, 'is_free'),
-			'id_tax_rules_group' => $this->getFieldValue($carrier, 'id_tax_rules_group'),
+			'id_tax_rules_group' => (int)$id_tax_rules_group,
 			'shipping_handling' => $this->getFieldValue($carrier, 'shipping_handling'),
 			'shipping_method' => $this->getFieldValue($carrier, 'shipping_method'),
 			'range_behavior' =>  $this->getFieldValue($carrier, 'range_behavior'),
