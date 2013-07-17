@@ -463,6 +463,23 @@ class CarrierCore extends ObjectModel
 
 		return $carriers;
 	}
+	
+	public static function getIdTaxRulesGroupMostUsed()
+	{
+		return Db::getInstance()->getValue('
+					SELECT id_tax_rules_group
+					FROM (
+						SELECT COUNT(*) n, carrier_shop.id_tax_rules_group
+						FROM '._DB_PREFIX_.'carrier c
+						'.Shop::addSqlAssociation('carrier', 'c').'
+						JOIN '._DB_PREFIX_.'tax_rules_group trg ON (carrier_shop.id_tax_rules_group = trg.id_tax_rules_group)
+						WHERE trg.active = 1
+						GROUP BY carrier.id_tax_rules_group
+						ORDER BY n DESC
+						LIMIT 1
+					) most_used'
+				);
+	}
 
 	public static function getDeliveredCountries($id_lang, $active_countries = false, $active_carriers = false, $contain_states = null)
 	{

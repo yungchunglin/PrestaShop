@@ -672,7 +672,11 @@ class AdminCarrierWizardControllerCore extends AdminController
 		if (Shop::isFeatureActive())
 		{
 			$multistore_field = array(array('shop'));
-			array_splice($step_fields, 1, 0, $multistore_field);
+			$tmp = $step_fields;
+			$step_fields = array(1 => $tmp[1]) +  $multistore_field;
+			array_shift($tmp);
+			foreach ($tmp as $row)
+				$step_field[] = $row;
 		}
 
 		$rules = array();
