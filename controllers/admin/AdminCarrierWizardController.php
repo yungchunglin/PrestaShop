@@ -97,6 +97,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 			$carrier = new Carrier();
 
 		$this->tpl_view_vars = array(
+			'enableAllSteps' => (int)Validate::isLoadedObject($carrier),
 			'wizard_steps' => $this->wizard_steps,
 			'validate_url' => $this->context->link->getAdminLink('AdminCarrierWizard'),
 			'wizard_contents' => array(

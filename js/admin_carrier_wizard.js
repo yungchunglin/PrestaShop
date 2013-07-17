@@ -39,7 +39,8 @@ function initCarrierWizard()
 		'onShowStep' : onShowStepCallback,
 		'onLeaveStep' : onLeaveStepCallback,
 		'onFinish' : onFinishCallback,
-		'transitionEffect' : 'slideleft'
+		'transitionEffect' : 'slideleft',
+		'enableAllSteps' : enableAllSteps
 	});
 }
 
@@ -83,32 +84,34 @@ function onLeaveStepCallback(obj, context)
 
 function displaySummary()
 {
+	// used as buffer - you must not replace directly in the translation vars
+	var tmp;
+
 	// Carrier name
 	$('#summary_name').html($('#name').val());
 	
 	// Delay and pricing
-	$('#summary_meta_informations').html(summary_translation_meta_informations);
+	tmp = summary_translation_meta_informations.replace('@s2', $('#delay_1').val());
 	if ($('#is_free_on').attr('checked'))
-		$('#summary_meta_informations').html($('#summary_meta_informations').html().replace('@s1', summary_translation_free));
+		tmp = tmp.replace('@s1', summary_translation_free);
 	else
-		$('#summary_meta_informations').html($('#summary_meta_informations').html().replace('@s1', summary_translation_paid));
-	$('#summary_meta_informations').html($('#summary_meta_informations').html().replace('@s2', $('#delay_1').val()));
+		tmp = tmp.replace('@s1', summary_translation_paid);
+	$('#summary_meta_informations').html(tmp);
 	
 	// Tax and calculation mode for the shipping cost
-	$('#summary_shipping_cost').html(summary_translation_shipping_cost);
+	tmp = summary_translation_shipping_cost.replace('@s2', '<strong>' + $('#id_tax_rules_group option:selected').text() + '</strong>');	
 	if ($('#billing_price').attr('checked'))
-		$('#summary_shipping_cost').html($('#summary_shipping_cost').html().replace('@s1', summary_translation_price));
+		tmp = tmp.replace('@s1', summary_translation_price);
 	else if ($('#billing_weight').attr('checked'))
-		$('#summary_shipping_cost').html($('#summary_shipping_cost').html().replace('@s1', summary_translation_weight));
+		tmp = tmp.replace('@s1', summary_translation_weight);
 	else
-		$('#summary_shipping_cost').html($('#summary_shipping_cost').html().replace('@s1', '<strong>' + summary_translation_undefined + '</strong>'));
-	$('#summary_shipping_cost').html($('#summary_shipping_cost').html().replace('@s2', '<strong>' + $('#id_tax_rules_group option:selected').text() + '</strong>'));
+		tmp = tmp.replace('@s1', '<strong>' + summary_translation_undefined + '</strong>');
+	$('#summary_shipping_cost').html(tmp);
 	
 	// Weight or price ranges
 	$('#summary_range').html(summary_translation_range);
-	var range_inf, range_sup;
-	range_inf = summary_translation_undefined;
-	range_sup = summary_translation_undefined;
+	var range_inf = summary_translation_undefined;
+	var range_sup = summary_translation_undefined;
 	$('input[name$="range_inf[]"]').each(function(){
 		if (!isNaN(parseFloat($(this).val())) && (range_inf == summary_translation_undefined || range_inf < $(this).val()))
 			range_inf = $(this).val();
@@ -117,9 +120,12 @@ function displaySummary()
 		if (!isNaN(parseFloat($(this).val())) && (range_sup == summary_translation_undefined || range_sup > $(this).val()))
 			range_sup = $(this).val();
 	});
-	$('#summary_range').html($('#summary_range').html().replace('@s1', '<strong>' + range_inf + '</strong>'));
-	$('#summary_range').html($('#summary_range').html().replace('@s2', '<strong>' + range_sup + '</strong>'));
-	$('#summary_range').html($('#summary_range').html().replace('@s3', '<strong>' + $('#range_behavior option:selected').text().toLowerCase() + '</strong>'));
+	$('#summary_range').html(
+		$('#summary_range').html()
+		.replace('@s1', '<strong>' + range_inf + '</strong>')
+		.replace('@s2', '<strong>' + range_sup + '</strong>')
+		.replace('@s3', '<strong>' + $('#range_behavior option:selected').text().toLowerCase() + '</strong>')
+	);
 	
 	// Delivery zones
 	$('#summary_zones').html('');
