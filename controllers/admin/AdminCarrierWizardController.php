@@ -146,6 +146,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		$this->fields_form = array(
 			'form' => array(
+				'id_form' => 'step_carrier_general',
 				'input' => array(
 					array(
 						'type' => 'text',
@@ -195,6 +196,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		$this->fields_form = array(
 			'form' => array(
+				'id_form' => 'step_carrier_shops',
 				'input' => array(
 					array(
 						'type' => 'shop',
@@ -211,6 +213,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		$this->fields_form = array(
 			'form' => array(
+				'id_form' => 'step_carrier_ranges',
 				'input' => array(
 					array(
 						'type' => 'radio',
@@ -310,10 +313,18 @@ class AdminCarrierWizardControllerCore extends AdminController
 			$fields_value['zones'][$zone['id_zone']] = Tools::getValue('zone_'.$zone['id_zone'], (in_array($zone['id_zone'], $carrier_zones_ids)));
 		
 		$shipping_method = $carrier->getShippingMethod();
-		$range_table = $carrier->getRangeTable();
-		$range_obj = $carrier->getRangeObject();
-		
-		$price_by_range = Carrier::getDeliveryPriceByRanges($range_table, (int)$carrier->id);
+		if ($shipping_method == Carrier::SHIPPING_METHOD_FREE)
+		{
+			$range_table = array();
+			$range_obj = $carrier->getRangeObject($carrier->shipping_method);
+			$price_by_range = array();
+		}
+		else
+		{
+			$range_table = $carrier->getRangeTable();
+			$range_obj = $carrier->getRangeObject();
+			$price_by_range = Carrier::getDeliveryPriceByRanges($range_table, (int)$carrier->id);
+		}
 		
 		foreach ($price_by_range as $price)
 			$tpl_vars['price_by_range'][$price['id_'.$range_table]][$price['id_zone']] = $price['price'];
@@ -332,6 +343,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		$this->fields_form = array(
 			'form' => array(
+				'id_form' => 'step_carrier_conf',
 				'input' => array(
 					array(
 						'type' => 'select',
@@ -425,7 +437,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 		$helper->default_form_language = $this->context->language->id;
 		$helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
 		$this->fields_form = array();
-		$helper->id = Tools::getValue('id_carrier');
+		$helper->id = (int)Tools::getValue('id_carrier');
 		$helper->identifier = $this->identifier;
 		$helper->tpl_vars = array_merge(array(
 			'fields_value' => $fields_value,
