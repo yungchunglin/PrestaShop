@@ -97,7 +97,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 			$carrier = new Carrier();
 
 		$this->tpl_view_vars = array(
-			'enableAllSteps' => (int)Validate::isLoadedObject($carrier),
+			'enableAllSteps' => Validate::isLoadedObject($carrier),
 			'wizard_steps' => $this->wizard_steps,
 			'validate_url' => $this->context->link->getAdminLink('AdminCarrierWizard'),
 			'carrierlist_url' => $this->context->link->getAdminLink('AdminCarriers').'&conf='.((int)Validate::isLoadedObject($carrier) ? 4 : 3),
@@ -113,6 +113,13 @@ class AdminCarrierWizardControllerCore extends AdminController
 		
 		if (Shop::isFeatureActive())
 			array_splice($this->tpl_view_vars['wizard_contents']['contents'], 1, 0, array(0 => $this->renderStepTwo($carrier)));
+			
+		$this->context->smarty->assign(array(
+			'max_image_size' => (int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE') / 1024 / 1024,
+			'carrier_logo' => (Validate::isLoadedObject($carrier) && file_exists(_PS_SHIP_IMG_DIR_.$carrier->id.'.jpg') ? _THEME_SHIP_DIR_.$carrier->id.'.jpg' : false)
+		));
+		$this->content .= $this->createTemplate('logo.tpl')->fetch();
+		$this->addjQueryPlugin(array('ajaxfileupload'));
 
 		return parent::renderView();
 	}
@@ -169,12 +176,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 						'required' => false,
 						'size' => 1,
 						'desc' => $this->l('Enter "0" for a longest shipping delay, or "9" for the shortest shipping delay.')
-					),
-					array(
-						'type' => 'file',
-						'label' => $this->l('Logo:'),
-						'name' => 'logo',
-						'desc' => $this->l('Upload a logo from your computer.').' (.gif, .jpg, .jpeg '.$this->l('or').' .png)'
 					),
 					array(
 						'type' => 'text',
@@ -443,7 +444,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 			'name' => $this->getFieldValue($carrier, 'name'),
 			'delay' => $this->getFieldValue($carrier, 'delay'),
 			'grade' => $this->getFieldValue($carrier, 'grade'),
-			'logo' => '',
 			'url' => $this->getFieldValue($carrier, 'url'),
 		);
 	}
@@ -539,6 +539,28 @@ class AdminCarrierWizardControllerCore extends AdminController
 		}
 	}
 	
+	public function ajaxProcessUploadLogo()
+	{
+		$allowedExtensions = array('jpeg', 'gif', 'png', 'jpg');
+		
+		$logo = (isset($_FILES['carrier_logo_input']) ? $_FILES['carrier_logo_input'] : false);
+		if ($logo && !empty($logo['tmp_name']) && $logo['tmp_name'] != 'none'
+			&& (!isset($logo['error']) || !$logo['error'])
+			&& preg_match('/\.(jpe?g|gif|png)$/', $logo['name'])
+			&& is_uploaded_file($logo['tmp_name']))
+		{
+			$file = $logo['tmp_name'];
+			do $tmp_name = uniqid().'.jpg';
+			while (file_exists(_PS_TMP_IMG_DIR_.$tmp_name));
+			if (!ImageManager::resize($file, _PS_TMP_IMG_DIR_.$tmp_name))
+				die ('<return result="error" message="Impossible to resize the image into '.Tools::safeOutput(_PS_TMP_IMG_DIR_).'" />');
+			@unlink($file);
+			die ('<return result="success" message="'.Tools::safeOutput(_PS_TMP_IMG_.$tmp_name).'" />');
+		}
+		else
+			die ('<return result="error" message="Cannot upload file" />');
+	}
+	
 	public function ajaxProcessFinishStep()
 	{
 		$return = array('has_error' => false);
@@ -573,7 +595,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 			}
 		}
 			
-		if(Validate::isLoadedObject($carrier))
+		if (Validate::isLoadedObject($carrier))
 		{
 			if (!$this->changeGroups((int)$carrier->id))
 			{
@@ -599,21 +621,20 @@ class AdminCarrierWizardControllerCore extends AdminController
 				$return['errors'][] = $this->l('An error occurred while saving the tax rules group.');
 			}
 			
-			if (!$this->postImage((int)$carrier->id))
+			if (Tools::getValue('logo'))
 			{
-				$return['has_error'] = true;
-				$return['errors'][] = $this->l('An error occurred while saving carrier logo.');
+				$logo = basename(Tools::getValue('logo'));
+				if (!file_exists(_PS_TMP_IMG_DIR_.$logo) || !copy(_PS_TMP_IMG_DIR_.$logo, _PS_SHIP_IMG_DIR_.$carrier->id.'.jpg'))
+				{
+					$return['has_error'] = true;
+					$return['errors'][] = $this->l('An error occurred while saving carrier logo.');
+				}
 			}
 			$return['id_carrier'] = $carrier->id;
 		}
 		die(Tools::jsonEncode($return));
 	}
-	
-	protected function updateCarrierAsso($id_carrier)
-	{
-	
-	}
-	
+
 	protected function changeGroups($id_carrier, $delete = true)
 	{
 		if ($delete)

@@ -50,6 +50,7 @@ function onShowStepCallback()
 		$(this).parent('li').addClass($(this).attr('class'));
 	});
 	resizeWizard();
+	$('#carrier_logo_block').prependTo($('#fieldset_form'));
 }
 
 function onFinishCallback(obj, context)
@@ -60,12 +61,11 @@ function onFinishCallback(obj, context)
 		url : validate_url,
 		async: false,
 		dataType: 'json',
-		data : $('#carrier_wizard .stepContainer .content form').serialize()+'&action=finish_step&ajax=1',
-		success : function(datas)
-		{
-			if (datas.has_error)
+		data : $('#carrier_wizard .stepContainer .content form').serialize() + '&action=finish_step&ajax=1',
+		success : function(data) {
+			if (data.has_error)
 			{				
-				displayError(datas.errors, context.fromStep);
+				displayError(data.errors, context.fromStep);
 				resizeWizard();
 			}
 			else
