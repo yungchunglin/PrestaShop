@@ -140,6 +140,13 @@ function displaySummary()
 		if ($(this).attr('checked'))
 			$('#summary_groups').html($('#summary_groups').html() + '<li><strong>' + $(this).parent().next().next().text() + '</strong></li>');
 	});
+	
+	// shop restrictions
+	$('#summary_shops').html('');
+	$('.input_shop').each(function(){
+		if ($(this).attr('checked'))
+			$('#summary_shops').html($('#summary_shops').html() + '<li><strong>' + $(this).parent().text() + '</strong></li>');
+	});
 }
 
 function validateSteps(step_number)
