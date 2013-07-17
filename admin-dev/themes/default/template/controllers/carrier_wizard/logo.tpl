@@ -23,6 +23,17 @@
 *	International Registered Trademark & Property of PrestaShop SA
 *}
 
+<div id="carrier_logo_block" style="position:absolute;top:15px;right:15px">
+	<img id="carrier_logo_img" src="{if $carrier_logo}{$carrier_logo}{else}../img/404.gif{/if}" />
+	<p>
+		<input id="carrier_logo_input" type="file" onchange="uploadCarrierLogo();" name="carrier_logo_input" />
+		<input type="hidden" id="logo" name="logo" value="" />
+	</p>
+	<p>
+		{l s='Format:'} JPG, GIF, PNG. {l s='Filesize:'} {$max_image_size|string_format:"%.2f"} {l s='MB max.'}
+	</p>
+</div>
+
 <script type="text/javascript">
 	function uploadCarrierLogo()
 	{
@@ -38,20 +49,34 @@
 				{
 					$('#carrier_logo_img').attr('src', message);
 					$('#logo').val(message);
+					fixCarrierLogoDisplay();
 				}
 				else
 					alert(message);
 			}
 		});
 	}
+	
+	function fixCarrierLogoDisplay()
+	{
+		$('<img/>').attr('src', $('#carrier_logo_img').attr('src')).load(function(){
+			var maxHeight = 200;
+			var maxWidth = 200;
+			var res = this.width / this.height;
+			$('#carrier_logo_img').width(this.width);
+			$('#carrier_logo_img').height(this.height);
+			if ($('#carrier_logo_img').width() > maxWidth)
+			{
+				$('#carrier_logo_img').width(maxWidth);
+				$('#carrier_logo_img').height(maxWidth / res);
+			}
+			if ($('#carrier_logo_img').height() > maxHeight)
+			{
+				$('#carrier_logo_img').height(maxHeight);
+				$('#carrier_logo_img').width(maxHeight * res);
+			}	
+		});
+	}
+	
+	fixCarrierLogoDisplay();
 </script>
-<div id="carrier_logo_block" style="position:absolute;top:10px;right:10px">
-	<img id="carrier_logo_img" src="{if $carrier_logo}{$carrier_logo}{else}../img/404.gif{/if}" />
-	<p>
-		<input id="carrier_logo_input" type="file" onchange="uploadCarrierLogo();" name="carrier_logo_input" />
-		<input type="hidden" id="logo" name="logo" value="" />
-	</p>
-	<p class="preference_description" style="clear:both">
-		{l s='Format:'} JPG, GIF, PNG. {l s='Filesize:'} {$max_image_size|string_format:"%.2f"} {l s='MB max.'}
-	</p>
-</div>

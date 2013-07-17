@@ -49,8 +49,8 @@ function onShowStepCallback()
 	$('.anchor li a').each( function () {
 		$(this).parent('li').addClass($(this).attr('class'));
 	});
+	$('#carrier_logo_block').prependTo($('div.content').filter(function() { return $(this).css('display') != 'none' }).children('.defaultForm').children('fieldset'));
 	resizeWizard();
-	$('#carrier_logo_block').prependTo($('#fieldset_form'));
 }
 
 function onFinishCallback(obj, context)
