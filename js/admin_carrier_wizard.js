@@ -69,7 +69,7 @@ function onFinishCallback(obj, context)
 				resizeWizard();
 			}
 			else
-				alert('YEAAAAAAH !!!');
+				window.location.href = carrierlist_url;
 		}
 	});
 }
