@@ -439,6 +439,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 	{
 		$helper = new HelperForm();
 		$helper->show_toolbar = false;
+		$helper->table =  $this->table;
 		$helper->default_form_language = $this->context->language->id;
 		$helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
 		$this->fields_form = array();
@@ -503,16 +504,11 @@ class AdminCarrierWizardControllerCore extends AdminController
 
 		if (Shop::isFeatureActive() && $step_number == 2)
 		{
-			if (!Tools::getValue('checkBoxShopAsso_'))
+			if (!Tools::getValue('checkBoxShopAsso_carrier'))
 			{
 				$return['has_error'] = true;
 				$return['errors'][] = $this->l('You must choose at least one shop or group shop.');
 			}
-		}
-		else if ((!Shop::isFeatureActive() && $step_number == 2) || (Shop::isFeatureActive() && $step_number == 3))
-		{
-			
-				
 		}
 		else
 			$this->validateRules('AdminCarrierWizardControllerCore');
