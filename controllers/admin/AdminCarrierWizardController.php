@@ -26,6 +26,8 @@
 
 class AdminCarrierWizardControllerCore extends AdminController
 {
+	protected  $wizard_access;
+	
 	public function __construct()
 	{
 		$this->display = 'view';
@@ -40,8 +42,10 @@ class AdminCarrierWizardControllerCore extends AdminController
 			'name' => 'logo',
 			'dir' => 's'
 		);
-		
+
 		parent::__construct();
+		
+		$this->wizard_access = Profile::getProfileAccess($this->context->employee->id_profile, Tab::getIdFromClassName('AdminCarrierWizard'));
 	}
 
 	public function setMedia()
@@ -89,13 +93,11 @@ class AdminCarrierWizardControllerCore extends AdminController
 
 	public function renderView()
 	{
-		$access = Profile::getProfileAccess($this->context->employee->id_profile, Tab::getIdFromClassName('AdminCarrierWizard'));
-
 		$this->initWizard();
 
-		if (Tools::getValue('id_carrier') && $access['edit'])
+		if (Tools::getValue('id_carrier') && $this->wizard_access['edit'])
 			$carrier = $this->loadObject();
-		elseif ($access['add'])
+		elseif ($this->wizard_access['add'])
 			$carrier = new Carrier();
 		else
 		{
@@ -504,17 +506,22 @@ class AdminCarrierWizardControllerCore extends AdminController
 		$step_number = (int)Tools::getValue('step_number');
 		$return = array('has_error' => false);
 
-		if (Shop::isFeatureActive() && $step_number == 2)
-		{
-			if (!Tools::getValue('checkBoxShopAsso_carrier'))
-			{
-				$return['has_error'] = true;
-				$return['errors'][] = $this->l('You must choose at least one shop or group shop.');
-			}
-		}
+		if (!$this->wizard_access['edit'])
+			$this->errors[] = Tools::displayError('You do not have permission to use this wizard.');
 		else
-			$this->validateRules('AdminCarrierWizardControllerCore');
-		
+		{
+
+			if (Shop::isFeatureActive() && $step_number == 2)
+			{
+				if (!Tools::getValue('checkBoxShopAsso_carrier'))
+				{
+					$return['has_error'] = true;
+					$return['errors'][] = $this->l('You must choose at least one shop or group shop.');
+				}
+			}
+			else
+				$this->validateRules('AdminCarrierWizardControllerCore');
+		}
 
 		if (count($this->errors))
 		{
@@ -526,8 +533,12 @@ class AdminCarrierWizardControllerCore extends AdminController
 	
 	public function processRange()
 	{
-		//getRangeObject
-		
+		if ((Validate::isLoadedObject($this->object) && !$this->wizard_access['edit']) || !$this->wizard_access['add'])
+		{
+			$this->errors[] = Tools::displayError('You do not have permission to use this wizard.');
+			return;
+		}
+
 		$range_inf = Tools::getValue('range_inf');
 		$range_sup = Tools::getValue('range_sup');
 		$range_type = Tools::getValue('shipping_method');
@@ -560,6 +571,9 @@ class AdminCarrierWizardControllerCore extends AdminController
 	
 	public function ajaxProcessUploadLogo()
 	{
+		if (!$this->wizard_access['edit'])
+			die('<return result="error" message="'.Tools::displayError('You do not have permission to use this wizard.').'" />');
+
 		$allowedExtensions = array('jpeg', 'gif', 'png', 'jpg');
 		
 		$logo = (isset($_FILES['carrier_logo_input']) ? $_FILES['carrier_logo_input'] : false);
@@ -572,89 +586,96 @@ class AdminCarrierWizardControllerCore extends AdminController
 			do $tmp_name = uniqid().'.jpg';
 			while (file_exists(_PS_TMP_IMG_DIR_.$tmp_name));
 			if (!ImageManager::resize($file, _PS_TMP_IMG_DIR_.$tmp_name))
-				die ('<return result="error" message="Impossible to resize the image into '.Tools::safeOutput(_PS_TMP_IMG_DIR_).'" />');
+				die('<return result="error" message="Impossible to resize the image into '.Tools::safeOutput(_PS_TMP_IMG_DIR_).'" />');
 			@unlink($file);
-			die ('<return result="success" message="'.Tools::safeOutput(_PS_TMP_IMG_.$tmp_name).'" />');
+			die('<return result="success" message="'.Tools::safeOutput(_PS_TMP_IMG_.$tmp_name).'" />');
 		}
 		else
-			die ('<return result="error" message="Cannot upload file" />');
+			die('<return result="error" message="Cannot upload file" />');
 	}
 	
 	public function ajaxProcessFinishStep()
 	{
 		$return = array('has_error' => false);
 		
-		//TODO : check permission
-				
-		if ($id_carrier = Tools::getValue('id_carrier'))
-		{
-			$current_carrier = new Carrier((int)$id_carrier);
-			// if update we duplicate current Carrier
-			$carrier = $current_carrier->duplicateObject();
-			if (Validate::isLoadedObject($carrier))
-			{
-				// Set flag deteled to true for historization
-				$current_carrier->deleted = true;
-				$current_carrier->update();
-	
-				// Fill the new carrier object
-				$this->copyFromPost($carrier, $this->table);
-				$carrier->position = $current_carrier->position;
-				$carrier->update();
-			}
-		}
+		if (!$this->wizard_access['edit'])
+			$return = array(
+				'has_error' =>  true,
+				$return['errors'][] = Tools::displayError('You do not have permission to use this wizard.')
+			);
 		else
 		{
-			$carrier = new Carrier();
-			$this->copyFromPost($carrier, $this->table);
-			if (!$carrier->add())
+				
+			if ($id_carrier = Tools::getValue('id_carrier'))
 			{
-				$return['has_error'] = true;
-				$return['errors'][] = $this->l('An error occurred while saving this carrier.');
-			}
-		}
-			
-		if (Validate::isLoadedObject($carrier))
-		{
-			if (!$this->changeGroups((int)$carrier->id))
-			{
-				$return['has_error'] = true;
-				$return['errors'][] = $this->l('An error occurred while saving carrier groups.');
-			}
-			
-			if (!$this->changeZones((int)$carrier->id))
-			{
-				$return['has_error'] = true;
-				$return['errors'][] = $this->l('An error occurred while saving carrier zones.');
-			}
-			
-			if (Shop::isFeatureActive() && !$this->updateAssoShop((int)$carrier->id))
-			{
-				$return['has_error'] = true;
-				$return['errors'][] = $this->l('An error occurred while saving associations of shops.');
-			}
-			
-			if (!$carrier->setTaxRulesGroup((int)Tools::getValue('id_tax_rules_group')))
-			{
-				$return['has_error'] = true;
-				$return['errors'][] = $this->l('An error occurred while saving the tax rules group.');
-			}
-			
-			if (Tools::getValue('logo'))
-			{
-				if (Tools::getValue('logo') == 'null' && file_exists(_PS_SHIP_IMG_DIR_.$carrier->id.'.jpg'))
-					unlink(_PS_SHIP_IMG_DIR_.$carrier->id.'.jpg');
-				else
+				$current_carrier = new Carrier((int)$id_carrier);
+				// if update we duplicate current Carrier
+				$carrier = $current_carrier->duplicateObject();
+				if (Validate::isLoadedObject($carrier))
 				{
-					$logo = basename(Tools::getValue('logo'));
-					if (!file_exists(_PS_TMP_IMG_DIR_.$logo) || !copy(_PS_TMP_IMG_DIR_.$logo, _PS_SHIP_IMG_DIR_.$carrier->id.'.jpg'))
-					{
-						$return['has_error'] = true;
-						$return['errors'][] = $this->l('An error occurred while saving carrier logo.');
-					}
+					// Set flag deteled to true for historization
+					$current_carrier->deleted = true;
+					$current_carrier->update();
+	
+					// Fill the new carrier object
+					$this->copyFromPost($carrier, $this->table);
+					$carrier->position = $current_carrier->position;
+					$carrier->update();
 				}
 			}
-			$return['id_carrier'] = $carrier->id;
+			else
+			{
+				$carrier = new Carrier();
+				$this->copyFromPost($carrier, $this->table);
+				if (!$carrier->add())
+				{
+					$return['has_error'] = true;
+					$return['errors'][] = $this->l('An error occurred while saving this carrier.');
+				}
+			}
+			
+			if (Validate::isLoadedObject($carrier))
+			{
+				if (!$this->changeGroups((int)$carrier->id))
+				{
+					$return['has_error'] = true;
+					$return['errors'][] = $this->l('An error occurred while saving carrier groups.');
+				}
+			
+				if (!$this->changeZones((int)$carrier->id))
+				{
+					$return['has_error'] = true;
+					$return['errors'][] = $this->l('An error occurred while saving carrier zones.');
+				}
+			
+				if (Shop::isFeatureActive() && !$this->updateAssoShop((int)$carrier->id))
+				{
+					$return['has_error'] = true;
+					$return['errors'][] = $this->l('An error occurred while saving associations of shops.');
+				}
+			
+				if (!$carrier->setTaxRulesGroup((int)Tools::getValue('id_tax_rules_group')))
+				{
+					$return['has_error'] = true;
+					$return['errors'][] = $this->l('An error occurred while saving the tax rules group.');
+				}
+			
+				if (Tools::getValue('logo'))
+				{
+					if (Tools::getValue('logo') == 'null' && file_exists(_PS_SHIP_IMG_DIR_.$carrier->id.'.jpg'))
+						unlink(_PS_SHIP_IMG_DIR_.$carrier->id.'.jpg');
+					else
+					{
+						$logo = basename(Tools::getValue('logo'));
+						if (!file_exists(_PS_TMP_IMG_DIR_.$logo) || !copy(_PS_TMP_IMG_DIR_.$logo, _PS_SHIP_IMG_DIR_.$carrier->id.'.jpg'))
+						{
+							$return['has_error'] = true;
+							$return['errors'][] = $this->l('An error occurred while saving carrier logo.');
+						}
+					}
+				}
+				$return['id_carrier'] = $carrier->id;
+			}
 		}
 		die(Tools::jsonEncode($return));
 	}
