@@ -937,9 +937,11 @@ class CarrierCore extends ObjectModel
 		return false;
 	}
 
-	public function getRangeObject()
+	public function getRangeObject($shipping_method = false)
 	{
-		$shipping_method = $this->getShippingMethod();
+		if (!$shipping_method)
+			$shipping_method = $this->getShippingMethod();
+
 		if ($shipping_method == Carrier::SHIPPING_METHOD_WEIGHT)
 			return new RangeWeight();
 		elseif ($shipping_method == Carrier::SHIPPING_METHOD_PRICE)
