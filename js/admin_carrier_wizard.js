@@ -91,7 +91,7 @@ function displaySummary()
 	$('#summary_name').html($('#name').val());
 	
 	// Delay and pricing
-	tmp = summary_translation_meta_informations.replace('@s2', $('#delay_1').val());
+	tmp = summary_translation_meta_informations.replace('@s2', '<strong>' + $('#delay_1').val() + '</strong>');
 	if ($('#is_free_on').attr('checked'))
 		tmp = tmp.replace('@s1', summary_translation_free);
 	else

@@ -29,12 +29,24 @@
 		<input id="carrier_logo_input" type="file" onchange="uploadCarrierLogo();" name="carrier_logo_input" />
 		<input type="hidden" id="logo" name="logo" value="" />
 	</p>
+	<a id="carrier_logo_remove" {if !$carrier_logo}style="display:none"{/if} href="javascript:removeCarrierLogo();"><img src="../img/admin/disabled.gif" /> {l s='Remove the logo'}</a>
 	<p>
 		{l s='Format:'} JPG, GIF, PNG. {l s='Filesize:'} {$max_image_size|string_format:"%.2f"} {l s='MB max.'}
+		<br />{l s='Current size:'} <span id="carrier_logo_size">{l s='undefined'}</span>.
 	</p>
 </div>
 
 <script type="text/javascript">
+	var carrier_translation_undefined = '{l s='undefined' js='1'}';
+
+	function removeCarrierLogo()
+	{
+		$('#carrier_logo_img').attr('src', '../img/404.gif');
+		$('#logo').val('null');
+		fixCarrierLogoDisplay();
+		$('#carrier_logo_remove').hide();
+	}
+	
 	function uploadCarrierLogo()
 	{
 		$.ajaxFileUpload({
@@ -49,6 +61,7 @@
 				{
 					$('#carrier_logo_img').attr('src', message);
 					$('#logo').val(message);
+					$('#carrier_logo_remove').show();
 					fixCarrierLogoDisplay();
 				}
 				else
@@ -63,6 +76,7 @@
 			var maxHeight = 200;
 			var maxWidth = 200;
 			var res = this.width / this.height;
+			$('#carrier_logo_size').text(this.width + 'x' + this.height + ' px');
 			$('#carrier_logo_img').width(this.width);
 			$('#carrier_logo_img').height(this.height);
 			if ($('#carrier_logo_img').width() > maxWidth)
@@ -74,7 +88,9 @@
 			{
 				$('#carrier_logo_img').height(maxHeight);
 				$('#carrier_logo_img').width(maxHeight * res);
-			}	
+			}
+			if ($('#logo').val() == 'null')
+				$('#carrier_logo_size').text(carrier_translation_undefined);
 		});
 	}
 	

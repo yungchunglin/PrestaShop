@@ -38,7 +38,8 @@
 </script>
 
 <fieldset>
-	<legend>{l s='Summary'} - <span id="summary_name"></span></legend>
+	{l s='Carrier name:'} <strong id="summary_name"></strong>
+	<div class="clear">&nbsp;</div>
 	<div id="summary_meta_informations"></div>
 	<div class="clear">&nbsp;</div>
 	<div id="summary_shipping_cost"></div>
