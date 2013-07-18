@@ -89,12 +89,19 @@ class AdminCarrierWizardControllerCore extends AdminController
 
 	public function renderView()
 	{
+		$access = Profile::getProfileAccess($this->context->employee->id_profile, Tab::getIdFromClassName('AdminCarrierWizard'));
+
 		$this->initWizard();
 
-		if (Tools::getValue('id_carrier'))
+		if (Tools::getValue('id_carrier') && $access['edit'])
 			$carrier = $this->loadObject();
-		else
+		elseif ($access['add'])
 			$carrier = new Carrier();
+		else
+		{
+			$this->errors[] = Tools::displayError('You do not have permission to use this wizard.');
+			return ;
+		}
 
 		$this->tpl_view_vars = array(
 			'enableAllSteps' => Validate::isLoadedObject($carrier),
