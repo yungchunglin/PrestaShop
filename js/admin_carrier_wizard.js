@@ -253,6 +253,37 @@ function bind_inputs()
 		
 		return false;
 	});
+	
+	$('input[name="is_free"]').on('click', function() {
+		var is_free = $(this);
+		$("#step_carrier_ranges .margin-form").each(function() {
+			var field = $(this).children().attr('name');
+			if (typeof(field) != 'undefined' && field != 'is_free')
+			{
+				if (parseInt(is_free.val()))
+				{
+					$(this).hide();
+					$(this).prev().hide();
+				}
+				else
+				{
+					$(this).show();
+					$(this).prev().show();
+				}
+			}
+		});
+		if (parseInt(is_free.val()))
+		{
+			$('#zones_table').hide();
+			$('.new_range').hide();
+		}
+		else
+		{
+			$('#zones_table').show();
+			$('.new_range').show();
+		}
+	});
+	$('input[name="is_free"]:checked').click();
 }
 
 function validateRange(index)
@@ -358,12 +389,4 @@ function delete_new_range()
 {
 	if ($('#new_range_form_placeholder').children('td').length = 1)
 		return false;
-}
-
-function is_freeChange()
-{
-	if ($('input[name=is_free]:checked').val())
-		$('').hide();
-	else
-		$('').show();
 }
