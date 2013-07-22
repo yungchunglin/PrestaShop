@@ -284,6 +284,20 @@ function bind_inputs()
 		}
 	});
 	$('input[name="is_free"]:checked').click();
+	
+	$('input[name="shipping_method"]').on('click', function() {
+	console.log('in');
+		$.ajax({
+			type:"POST",
+			url : validate_url,
+			async: false,
+			dataType: 'json',
+			data : 'id_carrier='+parseInt($('#id_carrier').val())+'&shipping_method='+parseInt($(this).val())+'&action=changeRanges&ajax=1',
+			success : function(data) {
+
+			}
+		});
+	});
 }
 
 function validateRange(index)
