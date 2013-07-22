@@ -307,10 +307,16 @@ class AdminCarrierWizardControllerCore extends AdminController
 				));
 		
 		$tpl_vars = array();
-		$tpl_vars['zones'] = Zone::getZones(false);
-		
 		$fields_value = $this->getStepThreeFieldsValues($carrier);
-		// Added values of object Zone
+		
+		$this->getTplRangesVarsAndValues($carrier, &$tpl_vars, &$fields_value);
+		
+		return $this->renderGenericForm(array('form' => $this->fields_form), $fields_value, $tpl_vars);
+	}
+	
+	protected function getTplRangesVarsAndValues($carrier, $tpl_vars, $fields_value)
+	{
+		$tpl_vars['zones'] = Zone::getZones(false);
 		$carrier_zones = $carrier->getZones();
 		$carrier_zones_ids = array();
 		if (is_array($carrier_zones))
@@ -345,7 +351,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 			$tpl_vars['ranges'][$range['id_'.$range_table]] = $range;
 			$tpl_vars['ranges'][$range['id_'.$range_table]]['id_range'] = $range['id_'.$range_table];
 		}
-		return $this->renderGenericForm(array('form' => $this->fields_form), $fields_value, $tpl_vars);
 	}
 
 	public function renderStepFour($carrier)
@@ -499,6 +504,27 @@ class AdminCarrierWizardControllerCore extends AdminController
 			'max_weight' => $this->getFieldValue($carrier, 'max_weight'),
 			'group' => $this->getFieldValue($carrier, 'group'),			
 		);
+	}
+	
+	
+	public function ajaxProcessChangeRanges()
+	{
+		if ((Validate::isLoadedObject($this->object) && !$this->wizard_access['edit']) || !$this->wizard_access['add'])
+		{
+			$this->errors[] = Tools::displayError('You do not have permission to use this wizard.');
+			return;
+		}
+		if (!(int)$shipping_method = (Tools::getValue('shipping_method')) || !in_array($shipping_method, array(CARRIER::SHIPPING_METHOD_PRICE, CARRIER::SHIPPING_METHOD_WEIGHT)))
+			return ;
+
+		$carrier = $this->loadObject(true);
+		$tpl_vars = array();
+		$fields_value = $this->getStepThreeFieldsValues($carrier);
+		$this->getTplRangesVarsAndValues($carrier, &$tpl_vars, &$fields_value);
+		$template = $this->createTemplate('controllers/carrier_wizard/helpers/form/form_ranges.tpl');
+		$template->assign($tpl_vars);
+		$template->assign($fields_value);
+		die ($template->fetch());
 	}
 	
 	public function ajaxProcessValidateStep()
