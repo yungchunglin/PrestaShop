@@ -735,7 +735,7 @@ class CarrierCore extends ObjectModel
 	 */
 	public function deleteDeliveryPrice($range_table)
 	{
-		$where = '`id_carrier` = '.(int)$this->id.' AND (`id_'.$range_table.'` IS NOT NULL OR `id_'.$range_table.'` = 0) ';
+		$where = '`id_carrier` = '.(int)$this->id.' AND (`id_'.bqSQL($range_table).'` IS NOT NULL OR `id_'.bqSQL($range_table).'` = 0) ';
 
 		if (Shop::getContext() == Shop::CONTEXT_ALL)
 			$where .= 'AND id_shop IS NULL AND id_shop_group IS NULL';

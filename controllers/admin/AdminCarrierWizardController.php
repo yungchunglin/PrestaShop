@@ -358,7 +358,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 
 		// init blank range
 		if (!count($tpl_vars['ranges']))
-			$tpl_vars['ranges'][] = array('id_range' => -1, 'delimiter1' => 0, 'delimiter2' => 5);
+			$tpl_vars['ranges'][] = array('id_range' => -1, 'delimiter1' => 0, 'delimiter2' => 100000);
 	}
 
 	public function renderStepFour($carrier)
@@ -529,10 +529,12 @@ class AdminCarrierWizardControllerCore extends AdminController
 		$tpl_vars = array();
 		$fields_value = $this->getStepThreeFieldsValues($carrier);
 		$this->getTplRangesVarsAndValues($carrier, &$tpl_vars, &$fields_value);
+
 		$template = $this->createTemplate('controllers/carrier_wizard/helpers/form/form_ranges.tpl');
 		$template->assign($tpl_vars);
 		$template->assign('fields_value', $fields_value);
 		$template->assign('input', array('type' => 'zone',	'name' => 'zones'	));
+
 		die ($template->fetch());
 	}
 	
@@ -566,33 +568,61 @@ class AdminCarrierWizardControllerCore extends AdminController
 		die(Tools::jsonEncode($return));
 	}
 	
-	public function processRange()
+	public function processRanges($id_carrier)
 	{
-		if ((Validate::isLoadedObject($this->object) && !$this->wizard_access['edit']) || !$this->wizard_access['add'])
+		if (!$this->wizard_access['edit'] || !$this->wizard_access['add'])
 		{
 			$this->errors[] = Tools::displayError('You do not have permission to use this wizard.');
 			return;
 		}
 
+		$carrier = new Carrier((int)$id_carrier);
+		if (!Validate::isLoadedObject($carrier))
+			return false;
+	
 		$range_inf = Tools::getValue('range_inf');
 		$range_sup = Tools::getValue('range_sup');
 		$range_type = Tools::getValue('shipping_method');
+
+		$fees = Tools::getValue('fees');
+
+		$carrier->deleteDeliveryPrice($carrier->getRangeTable());
 		if ($range_type != Carrier::SHIPPING_METHOD_FREE)
 		{
-			foreach ($range_inf as $key => $range)
-			{				
+			foreach ($range_inf as $key => $delimiter1)
+			{
+				if (!isset($range_sup[$key]))
+					continue;
+
 				if ($range_type == Carrier::SHIPPING_METHOD_WEIGHT)
-					$new_range = new RangeWeight();
-					
+					$range = new RangeWeight((int)$key);
 				if ($range_type == Carrier::SHIPPING_METHOD_PRICE)
-					$new_range = new RangePrice();
-				
-				
-				/* $this-> */
-				
-				
-			}	
+					$range = new RangePrice((int)$key);
+
+				$range->id_carrier = (int)$carrier->id;
+				$range->delimiter1 = (float)$delimiter1;
+				$range->delimiter2 = (float)$range_sup[$key];
+				$range->save();
+
+				if (!Validate::isLoadedObject($range))
+					return false;
+
+				$price_list = array();
+				foreach ($fees as $id_zone => $fee)
+					$price_list[] = array(
+						'id_range_price' => ($range_type == Carrier::SHIPPING_METHOD_PRICE ? (int)$range->id : null),
+						'id_range_weight' => ($range_type == Carrier::SHIPPING_METHOD_WEIGHT ? (int)$range->id : null),
+						'id_carrier' => (int)$carrier->id,
+						'id_zone' => (int)$id_zone,
+						'price' => (float)$fee[$key]
+					);
+
+				if (!$carrier->addDeliveryPrice($price_list))
+					return false;
+			}
 		}
+
+		return true;
 	}
 	
 	public function ajaxProcessUploadLogo()
@@ -666,25 +696,31 @@ class AdminCarrierWizardControllerCore extends AdminController
 					$return['has_error'] = true;
 					$return['errors'][] = $this->l('An error occurred while saving carrier groups.');
 				}
-			
+
 				if (!$this->changeZones((int)$carrier->id))
 				{
 					$return['has_error'] = true;
 					$return['errors'][] = $this->l('An error occurred while saving carrier zones.');
 				}
-			
+
+				if (!$this->processRanges((int)$carrier->id))
+				{
+					$return['has_error'] = true;
+					$return['errors'][] = $this->l('An error occurred while saving carrier ranges.');
+				}
+
 				if (Shop::isFeatureActive() && !$this->updateAssoShop((int)$carrier->id))
 				{
 					$return['has_error'] = true;
 					$return['errors'][] = $this->l('An error occurred while saving associations of shops.');
 				}
-			
+
 				if (!$carrier->setTaxRulesGroup((int)Tools::getValue('id_tax_rules_group')))
 				{
 					$return['has_error'] = true;
 					$return['errors'][] = $this->l('An error occurred while saving the tax rules group.');
 				}
-			
+
 				if (Tools::getValue('logo'))
 				{
 					if (Tools::getValue('logo') == 'null' && file_exists(_PS_SHIP_IMG_DIR_.$carrier->id.'.jpg'))

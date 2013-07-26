@@ -4,18 +4,18 @@
 					<td class="range_type"></td>
 					<td class="border_left border_bottom">>=</td>
 					{foreach from=$ranges key=r item=range}
-						<td class="border_bottom center"><input name="range_inf[]" type="text" value="{$range.delimiter1|string_format:"%.6f"}" /></td>
+						<td class="border_bottom center"><input name="range_inf[{$range.id_range|intval}]" type="text" value="{$range.delimiter1|string_format:"%.6f"}" /></td>
 					{foreachelse}
-						<td class="border_bottom center"><input name="range_inf[]" type="text" /></td>
+						<td class="border_bottom center"><input name="range_inf[{$range.id_range|intval}]" type="text" /></td>
 					{/foreach}
 				</tr>
 				<tr class="range_sup">
 					<td class="center range_type"></td>
 					<td class="border_left "><</td>
 					{foreach from=$ranges key=r item=range}
-						<td class="center"><input name="range_sup[]" type="text" value="{$range.delimiter2|string_format:"%.6f"}" /></td>
+						<td class="center"><input name="range_sup[{$range.id_range|intval}]" type="text" value="{$range.delimiter2|string_format:"%.6f"}" /></td>
 					{foreachelse}
-						<td class="center"><input name="range_sup[]" type="text" /></td>
+						<td class="center"><input name="range_sup[{$range.id_range|intval}]" type="text" /></td>
 					{/foreach}
 				</tr>
 				<tr class="fees_all">
@@ -37,7 +37,7 @@
 					<td>{$zone.name}</td>
 					<td class="zone"><input class="input_zone" name="zone_{$zone.id_zone}" value="1" type="checkbox" {if isset($fields_value[$input.name][$zone.id_zone])} checked="checked"{/if}/></td>
 					{foreach from=$ranges key=r item=range}
-						<td class="center"><input {if !isset($price_by_range[$range.id_range][$zone.id_zone])} disabled="disabled" {/if} name="fees[{$zone.id_zone}][]" type="text" value="{if isset($price_by_range[$range.id_range][$zone.id_zone])} {$price_by_range[$range.id_range][$zone.id_zone]|string_format:"%.6f"} {/if}" /></td>
+						<td class="center"><input name="fees[{$zone.id_zone|intval}][{$range.id_range|intval}]" type="text" value="{if isset($price_by_range[$range.id_range][$zone.id_zone])} {$price_by_range[$range.id_range][$zone.id_zone]|string_format:"%.6f"} {/if}" /></td>
 					{/foreach}
 				</tr>
 				{/foreach}
