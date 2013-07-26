@@ -522,10 +522,12 @@ class AdminCarrierWizardControllerCore extends AdminController
 			$this->errors[] = Tools::displayError('You do not have permission to use this wizard.');
 			return;
 		}
-		if (!(int)$shipping_method = (Tools::getValue('shipping_method')) || !in_array($shipping_method, array(CARRIER::SHIPPING_METHOD_PRICE, CARRIER::SHIPPING_METHOD_WEIGHT)))
+		if ((!(int)$shipping_method = Tools::getValue('shipping_method')) || !in_array($shipping_method, array(Carrier::SHIPPING_METHOD_PRICE, Carrier::SHIPPING_METHOD_WEIGHT)))
 			return ;
 
-		$carrier = $this->loadObject(true);		
+		$carrier = $this->loadObject(true);
+		$carrier->shipping_method = $shipping_method;
+
 		$tpl_vars = array();
 		$fields_value = $this->getStepThreeFieldsValues($carrier);
 		$this->getTplRangesVarsAndValues($carrier, &$tpl_vars, &$fields_value);
