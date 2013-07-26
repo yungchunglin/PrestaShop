@@ -1,7 +1,7 @@
 		<div style="float:left" id="zone_ranges">
 			<table cellpadding="5" cellspacing="0" id="zones_table">
 				<tr class="range_inf">
-					<td> Limites par tranche :</td>
+					<td class="range_type"></td>
 					<td class="border_left border_bottom">>=</td>
 					{foreach from=$ranges key=r item=range}
 						<td class="border_bottom center"><input name="range_inf[]" type="text" value="{$range.delimiter1|string_format:"%.6f"}" /></td>
@@ -10,7 +10,7 @@
 					{/foreach}
 				</tr>
 				<tr class="range_sup">
-					<td class="center">de poids</td>
+					<td class="center range_type"></td>
 					<td class="border_left "><</td>
 					{foreach from=$ranges key=r item=range}
 						<td class="center"><input name="range_sup[]" type="text" value="{$range.delimiter2|string_format:"%.6f"}" /></td>

@@ -355,6 +355,10 @@ class AdminCarrierWizardControllerCore extends AdminController
 			$tpl_vars['ranges'][$range['id_'.$range_table]] = $range;
 			$tpl_vars['ranges'][$range['id_'.$range_table]]['id_range'] = $range['id_'.$range_table];
 		}
+
+		// init blank range
+		if (!count($tpl_vars['ranges']))
+			$tpl_vars['ranges'][] = array('id_range' => -1, 'delimiter1' => 0, 'delimiter2' => 5);
 	}
 
 	public function renderStepFour($carrier)

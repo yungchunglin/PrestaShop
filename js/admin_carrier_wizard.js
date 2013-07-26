@@ -42,6 +42,17 @@ function initCarrierWizard()
 		'transitionEffect' : 'slideleft',
 		'enableAllSteps' : enableAllSteps
 	});
+	displayRangeType();
+}
+
+function displayRangeType()
+{
+	if ($('input[name="shipping_method"]:checked').val() == 1)
+		string = string_weight;
+	else
+		string = string_price;
+	
+	$('.range_type').html(string);
 }
 
 function onShowStepCallback()
@@ -294,6 +305,7 @@ function bind_inputs()
 			data : 'id_carrier='+parseInt($('#id_carrier').val())+'&shipping_method='+parseInt($(this).val())+'&action=changeRanges&ajax=1',
 			success : function(data) {
 				$('#zone_ranges').replaceWith(data);
+				displayRangeType();
 			}
 		});
 	});
