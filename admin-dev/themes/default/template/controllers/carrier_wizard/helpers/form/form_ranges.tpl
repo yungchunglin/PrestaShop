@@ -54,6 +54,3 @@
 				</tr>
 			</table>
 		</div>
-		<div class="new_range">
-			<a href="#" onclick="add_new_range();return false;" class="button" id="add_new_range">{l s="Add new range"}<img src="../img/admin/add.gif"/></a>
-		</div>

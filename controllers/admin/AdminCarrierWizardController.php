@@ -308,9 +308,8 @@ class AdminCarrierWizardControllerCore extends AdminController
 		
 		$tpl_vars = array();
 		$fields_value = $this->getStepThreeFieldsValues($carrier);
-		
-		$this->getTplRangesVarsAndValues($carrier, &$tpl_vars, &$fields_value);
-		
+
+		$this->getTplRangesVarsAndValues($carrier, &$tpl_vars, &$fields_value);		
 		return $this->renderGenericForm(array('form' => $this->fields_form), $fields_value, $tpl_vars);
 	}
 	
@@ -323,9 +322,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 			foreach ($carrier_zones as $carrier_zone)
 				$carrier_zones_ids[] = $carrier_zone['id_zone'];
 
-		$zones = Zone::getZones(false);
-		foreach ($zones as $zone)
-			$fields_value['zones'][$zone['id_zone']] = Tools::getValue('zone_'.$zone['id_zone'], (in_array($zone['id_zone'], $carrier_zones_ids)));
 		
 		$shipping_method = $carrier->getShippingMethod();
 		if ($shipping_method == Carrier::SHIPPING_METHOD_FREE)
@@ -339,8 +335,16 @@ class AdminCarrierWizardControllerCore extends AdminController
 			$range_table = $carrier->getRangeTable();
 			$range_obj = $carrier->getRangeObject();
 			$price_by_range = Carrier::getDeliveryPriceByRanges($range_table, (int)$carrier->id);
+
 		}
-		
+		$zones = Zone::getZones(false);
+		foreach ($zones as $zone)
+		{
+			$fields_value['zones'][$zone['id_zone']] = Tools::getValue('zone_'.$zone['id_zone'], (in_array($zone['id_zone'], $carrier_zones_ids)));
+			if (!count($price_by_range))
+			;
+		}
+
 		foreach ($price_by_range as $price)
 			$tpl_vars['price_by_range'][$price['id_'.$range_table]][$price['id_zone']] = $price['price'];
 			
@@ -517,13 +521,14 @@ class AdminCarrierWizardControllerCore extends AdminController
 		if (!(int)$shipping_method = (Tools::getValue('shipping_method')) || !in_array($shipping_method, array(CARRIER::SHIPPING_METHOD_PRICE, CARRIER::SHIPPING_METHOD_WEIGHT)))
 			return ;
 
-		$carrier = $this->loadObject(true);
+		$carrier = $this->loadObject(true);		
 		$tpl_vars = array();
 		$fields_value = $this->getStepThreeFieldsValues($carrier);
 		$this->getTplRangesVarsAndValues($carrier, &$tpl_vars, &$fields_value);
 		$template = $this->createTemplate('controllers/carrier_wizard/helpers/form/form_ranges.tpl');
 		$template->assign($tpl_vars);
-		$template->assign($fields_value);
+		$template->assign('fields_value', $fields_value);
+		$template->assign('input', array('type' => 'zone',	'name' => 'zones'	));
 		die ($template->fetch());
 	}
 	
@@ -568,19 +573,10 @@ class AdminCarrierWizardControllerCore extends AdminController
 		$range_inf = Tools::getValue('range_inf');
 		$range_sup = Tools::getValue('range_sup');
 		$range_type = Tools::getValue('shipping_method');
-		
 		if ($range_type != Carrier::SHIPPING_METHOD_FREE)
 		{
 			foreach ($range_inf as $key => $range)
-			{
-				if ($range_type == Carrier::SHIPPING_METHOD_DEFAULT)
-				{
-					if (!Configuration::get('PS_SHIPPING_METHOD'))
-						$range_type = Carrier::SHIPPING_METHOD_PRICE;
-					else
-						$range_type = Carrier::SHIPPING_METHOD_WEIGHT;
-				}
-				
+			{				
 				if ($range_type == Carrier::SHIPPING_METHOD_WEIGHT)
 					$new_range = new RangeWeight();
 					
@@ -659,7 +655,6 @@ class AdminCarrierWizardControllerCore extends AdminController
 					$return['errors'][] = $this->l('An error occurred while saving this carrier.');
 				}
 			}
-			
 			if (Validate::isLoadedObject($carrier))
 			{
 				if (!$this->changeGroups((int)$carrier->id))
@@ -735,6 +730,7 @@ class AdminCarrierWizardControllerCore extends AdminController
 			else
 				if (isset($_POST['zone_'.$zone['id_zone']]) && $_POST['zone_'.$zone['id_zone']])
 					$return &= $carrier->addZone($zone['id_zone']);
+
 		return $return;
 	}
 	

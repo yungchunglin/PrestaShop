@@ -27,6 +27,9 @@
 {block name="field"}
 	{if $input.name == 'zones'}
 		{include file='controllers/carrier_wizard/helpers/form/form_ranges.tpl'}
+		<div class="new_range">
+			<a href="#" onclick="add_new_range();return false;" class="button" id="add_new_range">{l s="Add new range"}<img src="../img/admin/add.gif"/></a>
+		</div>
 	{/if}
 	{$smarty.block.parent}
 {/block}

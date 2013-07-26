@@ -378,13 +378,12 @@ class CarrierCore extends ObjectModel
 	 */
 	public static function getDeliveryPriceByRanges($range_table, $id_carrier)
 	{
-		$range_table = pSQL($range_table);
-		$sql = 'SELECT d.id_'.$range_table.', d.id_carrier, d.id_zone, d.price
+		$sql = 'SELECT d.`id_'.bqSQL($range_table).'`, d.id_carrier, d.id_zone, d.price
 				FROM '._DB_PREFIX_.'delivery d
-				LEFT JOIN '._DB_PREFIX_.$range_table.' r ON r.id_'.$range_table.' = d.id_'.$range_table.'
+				LEFT JOIN `'._DB_PREFIX_.bqSQL($range_table).'` r ON r.`id_'.bqSQL($range_table).'` = d.`id_'.bqSQL($range_table).'`
 				WHERE d.id_carrier = '.(int)$id_carrier.'
-					AND d.id_'.$range_table.' IS NOT NULL
-					AND d.id_'.$range_table.' != 0
+					AND d.`id_'.bqSQL($range_table).'` IS NOT NULL
+					AND d.`id_'.bqSQL($range_table).'` != 0
 					'.Carrier::sqlDeliveryRangeShop($range_table).'
 				ORDER BY r.delimiter1';
 		return Db::getInstance()->executeS($sql);
@@ -1059,9 +1058,9 @@ class CarrierCore extends ObjectModel
 		$sql = 'AND '.$alias.'.id_delivery = (
 					SELECT d2.id_delivery
 					FROM '._DB_PREFIX_.'delivery d2
-					WHERE d2.id_carrier = '.$alias.'.id_carrier
-						AND d2.id_zone = '.$alias.'.id_zone
-						AND d2.id_'.$range_table.' = '.$alias.'.id_'.$range_table.'
+					WHERE d2.id_carrier = `'.bqSQL($alias).'`.id_carrier
+						AND d2.id_zone = `'.bqSQL($alias).'`.id_zone
+						AND d2.`id_'.bqSQL($range_table).'` = `'.bqSQL($alias).'`.`id_'.bqSQL($range_table).'`
 						'.$where.'
 					ORDER BY d2.id_shop DESC, d2.id_shop_group DESC
 					LIMIT 1
