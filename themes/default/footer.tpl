@@ -27,10 +27,13 @@
 				</div>
 
 <!-- Right -->
+        {if $page_name != 'cms'}
+
 				<div id="right_column" class="column grid_2 omega">
 					{$HOOK_RIGHT_COLUMN}
 				</div>
 			</div>
+        {/if}
 
 <!-- Footer -->
 			<div id="footer" class="grid_9 alpha omega clearfix">

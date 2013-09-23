@@ -23,7 +23,7 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 " lang="{$lang_iso}"> <![endif]-->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8HOO lt-ie7 " lang="{$lang_iso}"> <![endif]-->
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8 ie7" lang="{$lang_iso}"> <![endif]-->
 <!--[if IE 8]><html class="no-js lt-ie9 ie8" lang="{$lang_iso}"> <![endif]-->
 <!--[if gt IE 8]> <html class="no-js ie9" lang="{$lang_iso}"> <![endif]-->
@@ -85,9 +85,12 @@
 
 			<div id="columns" class="grid_9 alpha omega clearfix">
 				<!-- Left -->
-				<div id="left_column" class="column grid_2 alpha">
+                {if $page_name != 'cms'}
+
+                <div id="left_column" class="column grid_2 alpha">
 					{$HOOK_LEFT_COLUMN}
 				</div>
+                {/if}
 
 				<!-- Center -->
 				<div id="center_column" class=" grid_5">
