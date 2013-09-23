@@ -1,0 +1,16 @@
+{firstname} {lastname}您好！
+
+
+我们正在处理您的订单。
+
+您可在下列网址追踪订单状态。
+
+您也可到我的账户’- ‘订购记录查看有关项目及下载发票。
+
+感谢您在{shop_name}的购物!
+
+{shop_name} - {shop_url}
+
+
+
+{shop_url} powered by PrestaShop™

@@ -1,0 +1,43 @@
+新订单
+
+您好! {firstname} {lastname}, 感谢您在{shop_name}的购物!
+
+订单详情
+     
+    订单: {order_name} 已经在{date}下订
+	付款: payment
+	货品数量: {total_products}
+	折扣金额: {total_discounts}
+	运费: {total_shipping}
+	礼品包装费: {total_wrapping}
+	总计： {total_paid}
+
+
+运输
+	快递: {carrier}
+	送件地址:
+	收件公司:{delivery_company}
+	收件人: {delivery_firstname} {delivery_lastname}
+	送件地址: {delivery_address1}
+	                {delivery_address2}
+	邮编: {delivery_postal_code} 
+        城市: {delivery_city}
+	省市/ 地区: {delivery_state}
+        国家:{delivery_country} 
+	其他: {delivery_other}
+
+	收票地址:
+	收票公司: {invoice_company}
+	收票人: {invoice_firstname} {invoice_lastname}
+	收票地址: {invoice_address1}
+	                {invoice_address2}
+	邮编:{invoice_postal_code}
+        城市: {invoice_city}
+	省市/ 地区:{invoice_state}
+        国家{invoice_country} 
+        其他: {invoice_other}
+
+       您也可到我的账户’- ‘订购记录查看有关项目。
+
+
+{shop_url} 由PrestaShop™提供

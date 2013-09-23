@@ -1,0 +1,16 @@
+{firstname_friend} {lastname_friend},一起来加入我们吧!
+
+您的朋友 {firstname} {lastname} 希望邀请您一起享受购物的乐趣{shop_url}!.
+
+透过答应邀请获得购物优惠礼劵{discount}!
+
+注册过程非常简单, 请进入以下连结:
+
+{shop_url}{link}
+
+在登入的过程中，请别忘了提供您朋友（邀请者）的电邮地址呢！
+{email}.
+
+
+
+{shop_url} 由PrestaShop™提供

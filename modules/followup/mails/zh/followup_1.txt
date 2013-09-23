@@ -1,0 +1,15 @@
+您好！{firstname} {lastname},
+ 
+We noticed that during your last visit on {shop_name}, you did not validate the order you had started.
+
+我们注意到您的上次光临{shop_name}时，并没有落实订单。
+
+您选取的商品已经被储存好，欢迎再次光临，并可落实上次的选购清单。
+
+{shop_url}
+
+我们为尊贵的您提供特别的礼遇，你将在下次购物时享用{amount}%的折扣优惠，有效日期为{days}天，勿失良机呢！
+ 
+优惠劵编号: {voucher_num}
+
+请于下次惠顾时填上优惠劵编号，即时享用折扣。

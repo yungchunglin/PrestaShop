@@ -1,0 +1,13 @@
+{firstname} {lastname}您好！ 
+
+感谢您在{shop_name}的购物！
+
+
+如欲下载产品资料，请到：
+
+{virtualProducts}
+
+此外，您也可以到我的账户’- ‘订购记录查看及下载有关项目。
+
+
+{shop_url} powered by PrestaShop™

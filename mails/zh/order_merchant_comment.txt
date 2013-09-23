@@ -1,0 +1,9 @@
+{firstname} {lastname}您好!
+
+
+你好! 您已经收到有关订单的最新消息。
+
+内容： {message}
+
+
+{shop_url} powered by PrestaShop™

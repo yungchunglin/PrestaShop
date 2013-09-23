@@ -1,0 +1,14 @@
+{firstname} {lastname}您好！
+
+您的订单已经被寄出。
+
+您将很快收到追踪商品的网页连结，以便查看送件进度。
+
+另外，想要下载此或是查看有关项目，请打到‘我的账户’- ‘订购记录’。
+
+再次感谢您的光临惠顾{shop_name}!
+
+
+{shop_name} - {shop_url}
+
+{shop_url} powered by PrestaShop™

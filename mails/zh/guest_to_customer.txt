@@ -1,0 +1,17 @@
+	 {firstname} {lastname}您好！
+
+
+        恭喜！您已经成为我们的会员了！感谢您的支持！
+
+	电邮地址: {email}
+	密码: {passwd}
+
+
+        您可透过以下网址查看个人帐户资料: {shop_url}
+
+	请小心私隐外泄，切勿随便分享个人帐号资料。
+
+
+
+	{shop_url} powered by PrestaShop™
+

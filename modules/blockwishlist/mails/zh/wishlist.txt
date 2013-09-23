@@ -1,0 +1,6 @@
+您好！
+
+{firstname} {lastname邀请您来看看他/她的心愿单{wishlist} :
+{message}
+
+{shop_url} 由 PrestaShop™提供

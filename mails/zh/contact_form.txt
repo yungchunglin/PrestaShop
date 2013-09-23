@@ -1,0 +1,15 @@
+我们的客户服务主任已经接收到您的信息，谢谢!
+
+
+内容:
+
+{message}
+
+
+我们将尽快回复。
+
+祝：
+
+生活愉快！
+
+{shop_url} powered by PrestaShop™

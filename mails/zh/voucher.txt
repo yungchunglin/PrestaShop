@@ -1,0 +1,16 @@
+{firstname} {lastname}你好！,
+
+为答谢您的惠顾，我们将送您现金券乙张 #{id_order}.
+
+Here is the code of your voucher : {voucher_no. }with amount of {voucher_amount}.
+
+这是您的现金券编号： {voucher_no. }， 金额为： {voucher_amount}.
+
+欢迎在下次惠顾时使用，谢谢！
+
+再次感谢您的光临惠顾{shop_name}.
+
+{shop_name} - {shop_url}
+
+
+{shop_url} powered by PrestaShop™

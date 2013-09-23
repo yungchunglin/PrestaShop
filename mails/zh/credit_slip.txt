@@ -1,0 +1,16 @@
+{firstname} {lastname},  
+
+
+根据您的订单#{id_order}.，我们为您开出了信用传票乙张。
+
+ 
+您可以到以下网页查看并并下载信用传票。请登入"我的账户" - "订单"。
+
+
+非常感谢您 在{shop_name}.的购物： 
+
+
+{shop_name} - {shop_url}
+
+
+{shop_url} powered by PrestaShop™

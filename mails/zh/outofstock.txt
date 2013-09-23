@@ -1,0 +1,19 @@
+	{firstname} {lastname}您好!
+		
+	Your order #{id_order} history
+        您的订单 #{id_order}记录
+	
+
+
+        非常抱歉，您的订单  #{id_order}暂时没有库存以至送件时间上将有延误，我们将马上处理您的订单以  
+        改善送货时间，
+
+ 
+        您也可到我的账户’- ‘订购记录查看有关项目。
+
+		
+	{shop_name} - {shop_url}
+
+
+
+	{shop_url} powered by PrestaShop™

@@ -1,0 +1,9 @@
+{firstname} {lastname}您好！.
+
+您的退回订单编号 #{id_order_return} 已经在“退回订单”更新了。 
+
+ 您也可到我的账户’- ‘订购记录查看有关退回订单的项目。
+
+{shop_name} - {shop_url}
+
+{shop_url} powered by PrestaShop™

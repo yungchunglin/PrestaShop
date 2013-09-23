@@ -1,0 +1,9 @@
+您好!
+ 
+感谢您订阅我们的通讯!
+
+为答谢您订阅我们的通讯，我们将送出购物优惠礼劵乙张{discount}。
+
+{shop_name} - {shop_url}
+
+{shop_url} 由 PrestaShop™提供

@@ -1,0 +1,9 @@
+您好,
+
+商品{product}已经上市，并有库存。
+
+请进入以下网页查看产品详情：{product_link}
+
+数量有限，预购从速。
+
+{shop_url}由 PrestaShop™提供

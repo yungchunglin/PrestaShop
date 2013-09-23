@@ -1,0 +1,12 @@
+{firstname} {lastname}您好！,
+
+我们很高兴通知您，购物礼劵已经准备好！
+
+这时候礼劵编号：{voucher_num}，金额为：{voucher_amount}
+
+欢迎在下次购物时使用，请在付款过程中填上礼劵编号。
+
+非常感谢您的购物惠顾 {shop_name}.
+
+{shop_url} 由PrestaShop™提供
+

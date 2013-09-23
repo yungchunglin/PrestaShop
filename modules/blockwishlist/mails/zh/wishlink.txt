@@ -1,0 +1,7 @@
+Hi,
+
+{shop_name} 邀请您把以下的网页推荐给朋友，让他们可以看到您的心愿单{wishlist} :
+
+{message}
+
+{shop_url} 由PrestaShop™提供

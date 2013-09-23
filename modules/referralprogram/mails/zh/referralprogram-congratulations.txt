@@ -1,0 +1,7 @@
+恭喜!
+
+你的朋友{sponsored_firstname} {sponsored_lastname}已经在下了他/她的第一个订单了！
+
+我们将会送您一张价值 {discount_display} (voucher # {discount_name})的购物礼劵以答谢对我们的支持！
+
+{shop_url} 由PrestaShop™ 提供
